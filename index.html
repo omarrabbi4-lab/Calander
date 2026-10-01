@@ -1,100 +1,175 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#111827">
-<meta name="description" content="বাংলা ক্যালেন্ডার — বাংলা, ইংরেজি ও হিজরি তারিখ">
 
-<link rel="manifest" href="/manifest.json">
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+  name="theme-color"
+  content="#111827"
+>
+
+<meta
+  name="description"
+  content="বাংলা ক্যালেন্ডার — বাংলা, ইংরেজি ও হিজরি তারিখ"
+>
+
+<link
+  rel="manifest"
+  href="/manifest.json"
+>
 
 <title>বাংলা ক্যালেন্ডার</title>
 
+
 <style>
+
+/* =========================================
+   ROOT
+========================================= */
+
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
 }
 
-:root{
-  --glass:rgba(255,255,255,.12);
-  --glass2:rgba(255,255,255,.07);
-  --border:rgba(255,255,255,.20);
-  --text:#fff;
-  --muted:rgba(255,255,255,.72);
-  --accent:#ffd166;
-  --accent2:#ff8fab;
-  --shadow:0 20px 60px rgba(0,0,0,.30);
-}
-
 html{
   scroll-behavior:smooth;
 }
 
+:root{
+
+  --glass:
+    rgba(255,255,255,.12);
+
+  --glass-soft:
+    rgba(255,255,255,.075);
+
+  --border:
+    rgba(255,255,255,.20);
+
+  --text:#ffffff;
+
+  --muted:
+    rgba(255,255,255,.72);
+
+  --accent:#ffd166;
+
+  --pink:#ff7198;
+
+  --purple:#805cff;
+
+  --shadow:
+    0 25px 70px rgba(0,0,0,.28);
+
+}
+
+
+/* =========================================
+   BODY
+========================================= */
+
 body{
+
   min-height:100vh;
+
+  overflow-x:hidden;
+
+  color:var(--text);
+
   font-family:
     "Noto Sans Bengali",
     "Segoe UI",
     Arial,
     sans-serif;
-  color:var(--text);
-  overflow-x:hidden;
-  background:#17212b;
+
+  background:#16242b;
+
 }
 
-/* =====================================
-   REALISTIC BACKGROUND
-===================================== */
+
+/* =========================================
+   BACKGROUND SCENE
+========================================= */
 
 .scene{
+
   position:fixed;
+
   inset:0;
+
   overflow:hidden;
-  z-index:-10;
+
+  z-index:-20;
+
   background:
     linear-gradient(
       180deg,
       #b9d8df 0%,
-      #d8e7df 28%,
-      #a7c5b7 58%,
-      #5d786e 100%
+      #d9e8df 27%,
+      #a8c5b8 58%,
+      #58766a 100%
     );
-  transition:background 2s ease;
+
+  transition:
+    background 2.5s ease;
+
 }
+
 
 .scene::before{
+
   content:"";
+
   position:absolute;
+
   inset:0;
+
   background:
+
     radial-gradient(
-      circle at 50% 25%,
-      rgba(255,240,190,.75),
-      transparent 30%
+      circle at 50% 22%,
+      rgba(255,240,190,.72),
+      transparent 31%
     ),
+
     linear-gradient(
       180deg,
-      rgba(255,255,255,.18),
-      rgba(0,0,0,.25)
+      rgba(255,255,255,.14),
+      rgba(0,0,0,.22)
     );
+
 }
 
-/* landscape depth */
+
+/* =========================================
+   HORIZON
+========================================= */
 
 .horizon{
+
   position:absolute;
+
   left:-10%;
   right:-10%;
+
   bottom:0;
+
   height:42%;
+
   background:
     linear-gradient(
       180deg,
-      rgba(42,71,62,.1),
-      rgba(19,43,39,.72)
+      rgba(43,72,63,.12),
+      rgba(17,42,37,.78)
     );
+
   clip-path:
     polygon(
       0 45%,
@@ -109,36 +184,59 @@ body{
       100% 100%,
       0 100%
     );
+
   filter:blur(2px);
+
 }
 
+
+/* =========================================
+   GROUND
+========================================= */
+
 .ground{
+
   position:absolute;
+
   left:-10%;
   right:-10%;
+
   bottom:-8%;
+
   height:34%;
+
   background:
     radial-gradient(
       ellipse at center,
-      rgba(83,119,96,.85),
-      rgba(20,43,37,.95)
+      rgba(83,119,96,.90),
+      rgba(20,43,37,.97)
     );
-  border-radius:50% 50% 0 0;
+
+  border-radius:
+    50% 50% 0 0;
+
 }
 
-/* =====================================
+
+/* =========================================
    SUN
-===================================== */
+========================================= */
 
 .sun{
+
   position:absolute;
+
   width:125px;
   height:125px;
+
   border-radius:50%;
+
   top:13%;
   left:50%;
-  transform:translateX(-50%);
+
+  transform:
+    translateX(-50%);
+
   background:
     radial-gradient(
       circle,
@@ -147,111 +245,208 @@ body{
       #ffc45b 62%,
       rgba(255,180,60,.05) 72%
     );
+
   box-shadow:
-    0 0 35px rgba(255,210,110,.75),
-    0 0 100px rgba(255,190,70,.45),
-    0 0 180px rgba(255,190,70,.25);
-  animation:sunFloat 8s ease-in-out infinite;
+
+    0 0 35px
+    rgba(255,210,110,.75),
+
+    0 0 100px
+    rgba(255,190,70,.45),
+
+    0 0 180px
+    rgba(255,190,70,.25);
+
+  animation:
+    sunFloat 8s ease-in-out infinite;
+
 }
 
+
 .sun::after{
+
   content:"";
+
   position:absolute;
+
   inset:-45px;
+
   border-radius:50%;
+
   background:
     radial-gradient(
       circle,
       rgba(255,210,100,.20),
       transparent 65%
     );
-  animation:sunGlow 4s ease-in-out infinite alternate;
+
+  animation:
+    sunGlow 4s ease-in-out infinite alternate;
+
 }
+
 
 @keyframes sunFloat{
-  0%,100%{transform:translateX(-50%) translateY(0)}
-  50%{transform:translateX(-50%) translateY(10px)}
+
+  0%,100%{
+    transform:
+      translateX(-50%)
+      translateY(0);
+  }
+
+  50%{
+    transform:
+      translateX(-50%)
+      translateY(10px);
+  }
+
 }
+
 
 @keyframes sunGlow{
-  from{transform:scale(.9);opacity:.5}
-  to{transform:scale(1.1);opacity:1}
+
+  from{
+    transform:scale(.9);
+    opacity:.5;
+  }
+
+  to{
+    transform:scale(1.1);
+    opacity:1;
+  }
+
 }
 
-/* =====================================
+
+/* =========================================
    CLOUDS
-===================================== */
+========================================= */
 
 .cloud{
+
   position:absolute;
+
   width:230px;
   height:65px;
-  background:rgba(255,255,255,.42);
+
+  background:
+    rgba(255,255,255,.42);
+
   border-radius:100px;
+
   filter:blur(5px);
+
   opacity:.75;
-  animation:cloudMove linear infinite;
+
+  animation:
+    cloudMove linear infinite;
+
 }
+
 
 .cloud::before,
 .cloud::after{
+
   content:"";
+
   position:absolute;
+
   background:inherit;
+
   border-radius:50%;
+
 }
+
 
 .cloud::before{
+
   width:90px;
   height:90px;
+
   left:35px;
   bottom:15px;
+
 }
+
 
 .cloud::after{
+
   width:120px;
   height:120px;
+
   right:35px;
   bottom:5px;
+
 }
+
 
 .cloud1{
+
   top:16%;
   left:-300px;
+
   animation-duration:70s;
+
 }
+
 
 .cloud2{
+
   top:28%;
   left:-400px;
+
   transform:scale(.7);
+
   animation-duration:95s;
+
   animation-delay:10s;
+
 }
+
 
 .cloud3{
+
   top:9%;
   left:-350px;
+
   transform:scale(.45);
+
   animation-duration:120s;
+
   animation-delay:20s;
+
 }
+
 
 @keyframes cloudMove{
-  from{left:-350px}
-  to{left:110%}
+
+  from{
+    left:-350px;
+  }
+
+  to{
+    left:110%;
+  }
+
 }
 
-/* =====================================
+
+/* =========================================
    FOG
-===================================== */
+========================================= */
 
 .fog{
+
   position:absolute;
+
   left:-20%;
+
   width:140%;
+
   height:150px;
+
   border-radius:50%;
+
   background:
     radial-gradient(
       ellipse,
@@ -259,183 +454,363 @@ body{
       rgba(255,255,255,.15) 40%,
       transparent 72%
     );
+
   filter:blur(18px);
+
   pointer-events:none;
+
 }
+
 
 .fog1{
+
   bottom:28%;
-  animation:fogMove 22s ease-in-out infinite alternate;
+
+  animation:
+    fogMove 22s ease-in-out infinite alternate;
+
 }
+
 
 .fog2{
+
   bottom:39%;
+
   opacity:.45;
-  animation:fogMove 31s ease-in-out infinite alternate-reverse;
+
+  animation:
+    fogMove 31s ease-in-out infinite alternate-reverse;
+
 }
+
 
 .fog3{
+
   bottom:53%;
+
   opacity:.28;
-  animation:fogMove 40s ease-in-out infinite alternate;
+
+  animation:
+    fogMove 40s ease-in-out infinite alternate;
+
 }
+
 
 @keyframes fogMove{
-  from{transform:translateX(-6%) scaleX(1)}
-  to{transform:translateX(7%) scaleX(1.08)}
+
+  from{
+    transform:
+      translateX(-6%)
+      scaleX(1);
+  }
+
+  to{
+    transform:
+      translateX(7%)
+      scaleX(1.08);
+  }
+
 }
 
-/* =====================================
-   NIGHT
-===================================== */
+
+/* =========================================
+   STARS
+========================================= */
 
 .stars{
+
   position:absolute;
+
   inset:0;
+
   opacity:0;
-  transition:opacity 2s ease;
+
+  transition:
+    opacity 2s ease;
+
 }
+
 
 .star{
+
   position:absolute;
+
   width:3px;
   height:3px;
-  background:white;
+
+  background:#fff;
+
   border-radius:50%;
-  box-shadow:0 0 8px white;
-  animation:twinkle 2s ease-in-out infinite;
+
+  box-shadow:
+    0 0 8px #fff;
+
+  animation:
+    twinkle 2s ease-in-out infinite;
+
 }
+
 
 @keyframes twinkle{
-  0%,100%{opacity:.25;transform:scale(.7)}
-  50%{opacity:1;transform:scale(1.4)}
+
+  0%,100%{
+    opacity:.25;
+    transform:scale(.7);
+  }
+
+  50%{
+    opacity:1;
+    transform:scale(1.4);
+  }
+
 }
+
+
+/* =========================================
+   MOON
+========================================= */
 
 .moon{
+
   position:absolute;
+
   width:90px;
   height:90px;
+
   right:14%;
   top:12%;
+
   border-radius:50%;
+
   background:#fffce0;
+
   box-shadow:
-    0 0 25px rgba(255,255,220,.7),
-    0 0 90px rgba(255,255,220,.25);
+
+    0 0 25px
+    rgba(255,255,220,.7),
+
+    0 0 90px
+    rgba(255,255,220,.25);
+
   opacity:0;
-  transition:opacity 2s ease;
+
+  transition:
+    opacity 2s ease;
+
 }
+
 
 .moon::after{
+
   content:"";
+
   position:absolute;
+
   width:90px;
   height:90px;
+
   left:-20px;
   top:-8px;
+
   border-radius:50%;
+
   background:#101523;
+
 }
 
-/* =====================================
+
+/* =========================================
    PARTICLES
-===================================== */
+========================================= */
 
 .particles{
+
   position:absolute;
+
   inset:0;
+
   pointer-events:none;
+
 }
+
 
 .particle{
+
   position:absolute;
+
   width:4px;
   height:4px;
+
   border-radius:50%;
-  background:rgba(255,255,255,.65);
-  box-shadow:0 0 12px rgba(255,255,255,.5);
-  animation:particleMove linear infinite;
+
+  background:
+    rgba(255,255,255,.65);
+
+  box-shadow:
+    0 0 12px
+    rgba(255,255,255,.5);
+
+  animation:
+    particleMove linear infinite;
+
 }
+
 
 @keyframes particleMove{
+
   from{
-    transform:translateY(110vh) translateX(0);
+
+    transform:
+      translateY(110vh)
+      translateX(0);
+
     opacity:0;
+
   }
-  15%{opacity:1}
-  85%{opacity:.8}
+
+  15%{
+    opacity:1;
+  }
+
+  85%{
+    opacity:.8;
+  }
+
   to{
-    transform:translateY(-20vh) translateX(80px);
+
+    transform:
+      translateY(-20vh)
+      translateX(80px);
+
     opacity:0;
+
   }
+
 }
 
-/* =====================================
+
+/* =========================================
    RAIN
-===================================== */
+========================================= */
 
 .rain{
+
   position:absolute;
+
   inset:0;
+
   pointer-events:none;
+
   opacity:0;
-  transition:opacity .5s;
+
+  transition:
+    opacity .5s;
+
 }
+
 
 .drop{
+
   position:absolute;
+
   top:-100px;
+
   width:1px;
   height:70px;
-  background:linear-gradient(
-    transparent,
-    rgba(255,255,255,.55)
-  );
-  animation:rainFall linear infinite;
+
+  background:
+    linear-gradient(
+      transparent,
+      rgba(255,255,255,.55)
+    );
+
+  animation:
+    rainFall linear infinite;
+
 }
+
 
 @keyframes rainFall{
+
   to{
-    transform:translateY(120vh);
+    transform:
+      translateY(120vh);
   }
+
 }
 
-/* =====================================
+
+/* =========================================
    LEAVES
-===================================== */
+========================================= */
 
 .leaves{
+
   position:absolute;
+
   inset:0;
+
   pointer-events:none;
+
 }
+
 
 .leaf{
+
   position:absolute;
+
   width:11px;
   height:18px;
-  background:rgba(104,133,85,.75);
-  border-radius:100% 0 100% 0;
-  animation:leafFall linear infinite;
+
+  background:
+    rgba(104,133,85,.75);
+
+  border-radius:
+    100% 0 100% 0;
+
+  animation:
+    leafFall linear infinite;
+
 }
+
 
 @keyframes leafFall{
+
   0%{
-    transform:translateY(-10vh) rotate(0);
+
+    transform:
+      translateY(-10vh)
+      rotate(0);
+
   }
+
   50%{
-    transform:translateY(55vh) translateX(80px) rotate(180deg);
+
+    transform:
+      translateY(55vh)
+      translateX(80px)
+      rotate(180deg);
+
   }
+
   100%{
-    transform:translateY(115vh) translateX(-50px) rotate(360deg);
+
+    transform:
+      translateY(115vh)
+      translateX(-50px)
+      rotate(360deg);
+
   }
+
 }
 
-/* =====================================
-   DAY / NIGHT MODES
-===================================== */
+
+/* =========================================
+   NIGHT MODE
+========================================= */
 
 body.night .scene{
+
   background:
     linear-gradient(
       180deg,
@@ -443,48 +818,68 @@ body.night .scene{
       #111a30 45%,
       #10191c 100%
     );
+
 }
 
+
 body.night .scene::before{
+
   background:
+
     radial-gradient(
       circle at 75% 20%,
       rgba(150,170,255,.10),
       transparent 30%
     ),
+
     linear-gradient(
-      rgba(0,0,0,.2),
+      rgba(0,0,0,.20),
       rgba(0,0,0,.55)
     );
+
 }
+
 
 body.night .sun{
   opacity:0;
 }
 
+
 body.night .moon{
   opacity:1;
 }
+
 
 body.night .stars{
   opacity:1;
 }
 
+
 body.night .cloud{
   opacity:.15;
 }
 
+
 body.night .ground{
+
   background:
     radial-gradient(
       ellipse,
       #24352f,
       #070f10
     );
+
 }
 
+
+/* =========================================
+   EVENING MODE
+========================================= */
+
 body.evening .sun{
+
   top:42%;
+
   background:
     radial-gradient(
       circle,
@@ -492,9 +887,12 @@ body.evening .sun{
       #ffb14a 55%,
       rgba(255,120,50,.05) 72%
     );
+
 }
 
+
 body.evening .scene{
+
   background:
     linear-gradient(
       180deg,
@@ -502,641 +900,1446 @@ body.evening .scene{
       #d47b62 48%,
       #253e3a 100%
     );
+
 }
 
-/* =====================================
+
+/* =========================================
    APP
-===================================== */
+========================================= */
 
 .app{
+
   width:min(100%,560px);
+
   margin:auto;
-  padding:18px 14px 45px;
+
+  padding:
+    18px
+    14px
+    45px;
+
   position:relative;
+
 }
 
-/* =====================================
-   TOP BAR
-===================================== */
+
+/* =========================================
+   TOPBAR
+========================================= */
 
 .topbar{
+
   display:flex;
+
   justify-content:space-between;
+
   align-items:center;
+
   margin-bottom:18px;
+
 }
+
 
 .brand{
+
   display:flex;
+
   align-items:center;
+
   gap:10px;
+
 }
 
+
 .logo{
+
   width:48px;
   height:48px;
+
   border-radius:17px;
+
   display:grid;
+
   place-items:center;
+
   font-size:25px;
+
   background:
     linear-gradient(
       135deg,
       rgba(255,255,255,.25),
       rgba(255,255,255,.06)
     );
-  border:1px solid var(--border);
+
+  border:
+    1px solid var(--border);
+
   box-shadow:var(--shadow);
-  backdrop-filter:blur(18px);
-  animation:logoPulse 3s ease-in-out infinite;
+
+  backdrop-filter:
+    blur(18px);
+
+  animation:
+    logoPulse 3s ease-in-out infinite;
+
 }
+
 
 @keyframes logoPulse{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-4px) rotate(2deg)}
+
+  0%,100%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:
+      translateY(-4px)
+      rotate(2deg);
+  }
+
 }
+
 
 .brand h1{
+
   font-size:19px;
+
   font-weight:800;
+
 }
+
 
 .brand p{
+
   color:var(--muted);
+
   font-size:11px;
+
   margin-top:2px;
+
 }
+
 
 .icon-btn{
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.10);
+
+  border:
+    1px solid var(--border);
+
+  background:
+    rgba(255,255,255,.10);
+
   color:#fff;
+
   width:44px;
   height:44px;
+
   border-radius:15px;
+
   font-size:19px;
+
   cursor:pointer;
-  backdrop-filter:blur(15px);
+
+  backdrop-filter:
+    blur(15px);
+
   transition:.25s;
+
 }
+
 
 .icon-btn:active{
+
   transform:scale(.9);
+
 }
 
-/* =====================================
+
+/* =========================================
    HERO
-===================================== */
+========================================= */
 
 .hero{
+
   position:relative;
+
   overflow:hidden;
+
   min-height:205px;
-  padding:25px 21px;
-  border:1px solid var(--border);
+
+  padding:
+    25px
+    21px;
+
+  border:
+    1px solid var(--border);
+
   border-radius:30px;
+
   background:
     linear-gradient(
       135deg,
       rgba(255,255,255,.20),
       rgba(255,255,255,.06)
     );
-  backdrop-filter:blur(22px);
+
+  backdrop-filter:
+    blur(22px);
+
   box-shadow:
-    0 25px 70px rgba(0,0,0,.25),
-    inset 0 1px rgba(255,255,255,.18);
+
+    0 25px 70px
+    rgba(0,0,0,.25),
+
+    inset 0 1px
+    rgba(255,255,255,.18);
+
   margin-bottom:15px;
+
 }
 
+
 .hero::before{
+
   content:"";
+
   position:absolute;
+
   width:180px;
   height:180px;
+
   right:-70px;
   top:-80px;
+
   border-radius:50%;
+
   background:
     radial-gradient(
       circle,
       rgba(255,255,255,.20),
       transparent 65%
     );
-  animation:heroOrb 7s ease-in-out infinite;
+
+  animation:
+    heroOrb 7s ease-in-out infinite;
+
 }
+
 
 @keyframes heroOrb{
-  0%,100%{transform:translate(0,0)}
-  50%{transform:translate(-25px,20px)}
+
+  0%,100%{
+    transform:translate(0,0);
+  }
+
+  50%{
+    transform:
+      translate(-25px,20px);
+  }
+
 }
+
 
 .hero-content{
+
   position:relative;
+
   z-index:2;
+
 }
+
 
 .time-label{
+
   font-size:12px;
+
   color:var(--muted);
+
   letter-spacing:.5px;
+
 }
+
 
 .hero h2{
+
   font-size:30px;
+
   margin:7px 0;
+
   line-height:1.2;
+
 }
+
 
 .hero p{
+
   color:var(--muted);
+
   font-size:13px;
+
   line-height:1.7;
+
   max-width:390px;
+
 }
+
 
 .weather-icon{
+
   position:absolute;
+
   right:22px;
+
   bottom:20px;
+
   font-size:55px;
-  filter:drop-shadow(0 8px 15px rgba(0,0,0,.25));
-  animation:weatherFloat 4s ease-in-out infinite;
+
+  filter:
+    drop-shadow(
+      0 8px 15px
+      rgba(0,0,0,.25)
+    );
+
+  animation:
+    weatherFloat 4s ease-in-out infinite;
+
 }
+
 
 @keyframes weatherFloat{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-10px)}
+
+  0%,100%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-10px);
+  }
+
 }
 
-/* =====================================
+
+/* =========================================
    DATE CARDS
-===================================== */
+========================================= */
 
 .date-grid{
+
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+
+  grid-template-columns:
+    repeat(3,1fr);
+
   gap:10px;
+
   margin-bottom:15px;
+
 }
+
 
 .date-card{
+
   min-height:110px;
+
   padding:15px 12px;
+
   border-radius:22px;
-  border:1px solid var(--border);
-  background:var(--glass2);
-  backdrop-filter:blur(18px);
-  box-shadow:var(--shadow);
+
+  border:
+    1px solid var(--border);
+
+  background:
+    var(--glass-soft);
+
+  backdrop-filter:
+    blur(18px);
+
+  box-shadow:
+    var(--shadow);
+
   transition:.3s;
-  animation:cardIn .7s both;
+
+  animation:
+    cardIn .7s both;
+
 }
+
 
 .date-card:nth-child(2){
+
   animation-delay:.1s;
+
 }
+
 
 .date-card:nth-child(3){
+
   animation-delay:.2s;
+
 }
+
 
 .date-card:hover{
-  transform:translateY(-4px);
+
+  transform:
+    translateY(-4px);
+
 }
+
 
 @keyframes cardIn{
+
   from{
+
     opacity:0;
-    transform:translateY(20px);
+
+    transform:
+      translateY(20px);
+
   }
+
   to{
+
     opacity:1;
+
     transform:none;
+
   }
+
 }
+
 
 .date-card small{
+
   color:var(--muted);
+
   font-size:10px;
+
 }
+
 
 .date-card strong{
+
   display:block;
+
   font-size:20px;
+
   margin-top:9px;
+
 }
+
 
 .date-card span{
+
   display:block;
+
   font-size:10px;
+
   color:var(--muted);
+
   margin-top:5px;
+
 }
 
-/* =====================================
+
+/* =========================================
    SECTION
-===================================== */
+========================================= */
 
 .section{
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.08);
-  backdrop-filter:blur(20px);
+
+  border:
+    1px solid var(--border);
+
+  background:
+    rgba(255,255,255,.08);
+
+  backdrop-filter:
+    blur(20px);
+
   border-radius:27px;
+
   padding:16px;
+
   margin-bottom:15px;
-  box-shadow:var(--shadow);
+
+  box-shadow:
+    var(--shadow);
+
 }
+
 
 .section-head{
+
   display:flex;
+
   justify-content:space-between;
+
   align-items:center;
+
   margin-bottom:14px;
+
 }
+
 
 .section-head h3{
+
   font-size:17px;
+
 }
+
 
 .section-head span{
+
   font-size:11px;
+
   color:var(--muted);
+
 }
 
-/* =====================================
+
+/* =========================================
    CALENDAR HEADER
-===================================== */
+========================================= */
 
 .calendar-head{
+
   display:flex;
+
   align-items:center;
+
   justify-content:space-between;
+
   margin-bottom:14px;
+
 }
+
 
 .month-title{
+
   text-align:center;
+
 }
+
 
 .month-title strong{
+
   display:block;
+
   font-size:18px;
+
 }
+
 
 .month-title small{
+
   color:var(--muted);
+
   font-size:10px;
+
 }
+
 
 .nav-btn{
+
   width:40px;
   height:40px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.10);
+
+  border:
+    1px solid var(--border);
+
+  background:
+    rgba(255,255,255,.10);
+
   color:#fff;
+
   border-radius:14px;
+
   font-size:20px;
+
   cursor:pointer;
+
 }
 
-/* =====================================
+
+/* =========================================
    CALENDAR
-===================================== */
+========================================= */
 
 .weekdays,
 .calendar{
+
   display:grid;
-  grid-template-columns:repeat(7,1fr);
+
+  grid-template-columns:
+    repeat(7,1fr);
+
   gap:5px;
+
 }
+
 
 .weekdays div{
+
   text-align:center;
+
   font-size:10px;
+
   color:var(--muted);
+
   padding:5px 0;
+
 }
+
 
 .day{
+
   min-height:48px;
+
   border-radius:14px;
+
   display:flex;
+
   flex-direction:column;
+
   align-items:center;
+
   justify-content:center;
+
   position:relative;
+
   cursor:pointer;
-  border:1px solid transparent;
+
+  border:
+    1px solid transparent;
+
   transition:.25s;
-  animation:dayIn .45s both;
+
+  animation:
+    dayIn .45s both;
+
 }
+
 
 .day:hover{
-  background:rgba(255,255,255,.12);
+
+  background:
+    rgba(255,255,255,.12);
+
 }
+
 
 .day-num{
+
   font-size:14px;
+
   font-weight:700;
+
 }
+
 
 .day-bn{
+
   font-size:8px;
+
   color:var(--muted);
+
   margin-top:2px;
+
 }
 
+
 .today{
+
   background:
     linear-gradient(
       135deg,
       rgba(255,209,102,.30),
       rgba(255,143,171,.18)
     );
-  border-color:rgba(255,220,140,.55);
+
+  border-color:
+    rgba(255,220,140,.55);
+
   box-shadow:
-    0 0 20px rgba(255,195,90,.18);
+    0 0 20px
+    rgba(255,195,90,.18);
+
   animation:
-    todayPulse 2.4s ease-in-out infinite;
+    todayPulse 2.4s
+    ease-in-out infinite;
+
 }
+
 
 @keyframes todayPulse{
+
   0%,100%{
-    box-shadow:0 0 15px rgba(255,200,90,.15);
+
+    box-shadow:
+      0 0 15px
+      rgba(255,200,90,.15);
+
   }
+
   50%{
-    box-shadow:0 0 30px rgba(255,200,90,.40);
+
+    box-shadow:
+      0 0 30px
+      rgba(255,200,90,.40);
+
   }
+
 }
+
 
 .holiday{
+
   color:#ffd4d4;
-  background:rgba(255,80,100,.12);
+
+  background:
+    rgba(255,80,100,.12);
+
 }
+
 
 .holiday::after{
+
   content:"";
+
   width:5px;
   height:5px;
+
   border-radius:50%;
+
   background:#ff7185;
+
   position:absolute;
+
   right:5px;
   top:5px;
-  box-shadow:0 0 8px #ff7185;
+
+  box-shadow:
+    0 0 8px #ff7185;
+
 }
+
 
 .event::before{
+
   content:"•";
+
   position:absolute;
+
   bottom:2px;
+
   color:#80e7ff;
+
   font-size:14px;
+
 }
+
 
 @keyframes dayIn{
+
   from{
+
     opacity:0;
+
     transform:scale(.8);
+
   }
+
   to{
+
     opacity:1;
+
     transform:scale(1);
+
   }
+
 }
 
-/* =====================================
+
+/* =========================================
    INFO
-===================================== */
+========================================= */
 
 .info{
+
   padding:16px;
+
   border-radius:20px;
-  background:rgba(0,0,0,.14);
-  border:1px solid rgba(255,255,255,.10);
+
+  background:
+    rgba(0,0,0,.14);
+
+  border:
+    1px solid
+    rgba(255,255,255,.10);
+
 }
+
 
 .info-title{
+
   font-size:18px;
+
   font-weight:800;
+
   margin-bottom:8px;
+
 }
+
 
 .info p{
+
   font-size:12px;
+
   color:var(--muted);
-  line-height:1.7;
+
+  line-height:1.8;
+
+  white-space:pre-line;
+
 }
+
 
 .badge{
+
   display:inline-block;
+
   margin-top:10px;
+
   padding:7px 10px;
+
   border-radius:10px;
-  background:rgba(255,110,130,.15);
+
+  background:
+    rgba(255,110,130,.15);
+
   color:#ffd0d6;
+
   font-size:10px;
+
 }
 
-/* =====================================
+
+/* =========================================
    STATS
-===================================== */
+========================================= */
 
 .stats{
+
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+
+  grid-template-columns:
+    repeat(3,1fr);
+
   gap:9px;
+
 }
+
 
 .stat{
+
   padding:15px 10px;
+
   border-radius:19px;
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.10);
+
+  background:
+    rgba(255,255,255,.07);
+
+  border:
+    1px solid
+    rgba(255,255,255,.10);
+
   text-align:center;
+
 }
+
 
 .stat b{
+
   display:block;
-  font-size:20px;
+
+  font-size:18px;
+
 }
+
 
 .stat span{
+
   display:block;
+
   color:var(--muted);
+
   font-size:9px;
+
   margin-top:4px;
+
 }
 
-/* =====================================
+
+/* =========================================
+   SMART TIME
+========================================= */
+
+.smart-time{
+
+  position:relative;
+
+  overflow:hidden;
+
+}
+
+
+.smart-time::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:180px;
+  height:180px;
+
+  right:-90px;
+  top:-90px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,210,100,.20),
+      transparent 70%
+    );
+
+  animation:
+    clockGlow 5s
+    ease-in-out infinite;
+
+}
+
+
+@keyframes clockGlow{
+
+  0%,100%{
+    transform:scale(.9);
+  }
+
+  50%{
+    transform:scale(1.2);
+  }
+
+}
+
+
+.live-clock{
+
+  position:relative;
+
+  text-align:center;
+
+  font-size:38px;
+
+  font-weight:900;
+
+  letter-spacing:2px;
+
+  padding:
+    10px 0 18px;
+
+  text-shadow:
+    0 0 25px
+    rgba(255,255,255,.22);
+
+}
+
+
+.time-details{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:8px;
+
+}
+
+
+.time-details div{
+
+  padding:11px 7px;
+
+  border-radius:15px;
+
+  background:
+    rgba(255,255,255,.07);
+
+  border:
+    1px solid
+    rgba(255,255,255,.10);
+
+  text-align:center;
+
+}
+
+
+.time-details span{
+
+  display:block;
+
+  font-size:9px;
+
+  color:var(--muted);
+
+}
+
+
+.time-details b{
+
+  display:block;
+
+  font-size:11px;
+
+  margin-top:5px;
+
+}
+
+
+/* =========================================
+   SEASON CARD
+========================================= */
+
+.season-card{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:16px;
+
+  overflow:hidden;
+
+  position:relative;
+
+}
+
+
+.season-card::after{
+
+  content:"";
+
+  position:absolute;
+
+  width:100px;
+  height:100px;
+
+  right:-40px;
+  bottom:-40px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.15),
+      transparent 70%
+    );
+
+}
+
+
+.season-icon{
+
+  width:65px;
+  height:65px;
+
+  flex-shrink:0;
+
+  display:grid;
+
+  place-items:center;
+
+  border-radius:22px;
+
+  font-size:34px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.18),
+      rgba(255,255,255,.05)
+    );
+
+  border:
+    1px solid var(--border);
+
+  animation:
+    seasonFloat 4s
+    ease-in-out infinite;
+
+}
+
+
+@keyframes seasonFloat{
+
+  0%,100%{
+
+    transform:
+      translateY(0)
+      rotate(0);
+
+  }
+
+  50%{
+
+    transform:
+      translateY(-7px)
+      rotate(3deg);
+
+  }
+
+}
+
+
+.season-title{
+
+  font-size:18px;
+
+  font-weight:800;
+
+  margin-bottom:5px;
+
+}
+
+
+.season-card p{
+
+  color:var(--muted);
+
+  font-size:11px;
+
+  line-height:1.7;
+
+}
+
+
+/* =========================================
    EVENT
-===================================== */
+========================================= */
 
 .event-form{
+
   display:grid;
+
   gap:9px;
+
 }
+
 
 .input{
+
   width:100%;
+
   border:none;
+
   outline:none;
+
   color:#fff;
+
   padding:13px 14px;
+
   border-radius:14px;
-  background:rgba(0,0,0,.18);
-  border:1px solid rgba(255,255,255,.12);
+
+  background:
+    rgba(0,0,0,.18);
+
+  border:
+    1px solid
+    rgba(255,255,255,.12);
+
 }
+
 
 .input::placeholder{
-  color:rgba(255,255,255,.45);
+
+  color:
+    rgba(255,255,255,.45);
+
 }
 
+
 .primary{
+
   border:none;
+
   color:#fff;
+
   padding:13px;
+
   border-radius:15px;
+
   font-weight:800;
+
   cursor:pointer;
+
   background:
     linear-gradient(
       135deg,
       #ff7198,
       #805cff
     );
+
   box-shadow:
-    0 10px 25px rgba(120,80,255,.25);
+    0 10px 25px
+    rgba(120,80,255,.25);
+
   transition:.25s;
+
 }
+
 
 .primary:active{
+
   transform:scale(.96);
+
 }
 
-/* =====================================
-   SOUND
-===================================== */
+
+/* =========================================
+   SOUND BUTTON
+========================================= */
 
 .sound-btn{
+
   position:fixed;
+
   right:17px;
+
   bottom:20px;
+
   z-index:30;
+
   width:50px;
   height:50px;
+
   border:none;
+
   border-radius:18px;
+
   color:#fff;
+
   font-size:21px;
+
   background:
     linear-gradient(
       135deg,
-      rgba(255,113,152,.9),
-      rgba(113,78,255,.9)
+      rgba(255,113,152,.90),
+      rgba(113,78,255,.90)
     );
+
   box-shadow:
-    0 15px 35px rgba(0,0,0,.35);
+    0 15px 35px
+    rgba(0,0,0,.35);
+
   cursor:pointer;
+
 }
 
-/* =====================================
+
+/* =========================================
    TOAST
-===================================== */
+========================================= */
 
 .toast{
+
   position:fixed;
+
   left:50%;
+
   bottom:85px;
-  transform:translateX(-50%) translateY(30px);
-  background:rgba(10,10,18,.88);
-  border:1px solid rgba(255,255,255,.15);
-  backdrop-filter:blur(18px);
-  padding:11px 16px;
+
+  transform:
+    translateX(-50%)
+    translateY(30px);
+
+  background:
+    rgba(10,10,18,.88);
+
+  border:
+    1px solid
+    rgba(255,255,255,.15);
+
+  backdrop-filter:
+    blur(18px);
+
+  padding:
+    11px 16px;
+
   border-radius:14px;
+
   font-size:12px;
+
   opacity:0;
+
   pointer-events:none;
+
   transition:.3s;
+
   z-index:50;
+
   white-space:nowrap;
+
 }
+
 
 .toast.show{
+
   opacity:1;
-  transform:translateX(-50%) translateY(0);
+
+  transform:
+    translateX(-50%)
+    translateY(0);
+
 }
 
-/* =====================================
+
+/* =========================================
    FOOTER
-===================================== */
+========================================= */
 
 .footer{
+
   text-align:center;
-  color:rgba(255,255,255,.5);
+
+  color:
+    rgba(255,255,255,.5);
+
   font-size:10px;
+
   padding:10px;
+
 }
 
-/* =====================================
+
+/* =========================================
    MOBILE
-===================================== */
+========================================= */
 
 @media(max-width:420px){
 
   .app{
-    padding:13px 10px 35px;
+
+    padding:
+      13px
+      10px
+      35px;
+
   }
 
   .hero{
+
     min-height:195px;
-    padding:22px 17px;
+
+    padding:
+      22px 17px;
+
   }
 
   .hero h2{
+
     font-size:26px;
+
   }
 
   .weather-icon{
+
     font-size:45px;
+
     right:15px;
+
   }
 
   .date-card{
+
     min-height:105px;
-    padding:13px 8px;
+
+    padding:
+      13px 8px;
+
   }
 
   .date-card strong{
+
     font-size:17px;
+
   }
 
   .day{
+
     min-height:44px;
+
     border-radius:11px;
+
   }
 
   .day-num{
+
     font-size:12px;
+
   }
 
   .day-bn{
+
     font-size:7px;
+
   }
+
+  .live-clock{
+
+    font-size:31px;
+
+  }
+
+  .time-details span{
+
+    font-size:8px;
+
+  }
+
+  .time-details b{
+
+    font-size:10px;
+
+  }
+
 }
 
+
 @media(min-width:700px){
+
   .app{
+
     padding-top:30px;
+
   }
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
-<!-- =====================================
-     BACKGROUND
-===================================== -->
+
+<!-- =========================================
+     REALISTIC BACKGROUND
+========================================= -->
 
 <div class="scene">
 
@@ -1144,55 +2347,89 @@ body.evening .scene{
 
   <div class="moon"></div>
 
-  <div class="stars" id="stars"></div>
+  <div
+    class="stars"
+    id="stars">
+  </div>
 
   <div class="cloud cloud1"></div>
+
   <div class="cloud cloud2"></div>
+
   <div class="cloud cloud3"></div>
 
   <div class="fog fog1"></div>
+
   <div class="fog fog2"></div>
+
   <div class="fog fog3"></div>
 
-  <div class="particles" id="particles"></div>
+  <div
+    class="particles"
+    id="particles">
+  </div>
 
-  <div class="rain" id="rain"></div>
+  <div
+    class="rain"
+    id="rain">
+  </div>
 
-  <div class="leaves" id="leaves"></div>
+  <div
+    class="leaves"
+    id="leaves">
+  </div>
 
   <div class="horizon"></div>
+
   <div class="ground"></div>
 
 </div>
 
 
-<!-- =====================================
+
+<!-- =========================================
      APP
-===================================== -->
+========================================= -->
 
 <main class="app">
+
+
+  <!-- TOPBAR -->
 
   <header class="topbar">
 
     <div class="brand">
 
-      <div class="logo">📅</div>
+      <div class="logo">
+        📅
+      </div>
 
       <div>
-        <h1>বাংলা ক্যালেন্ডার</h1>
-        <p>সময় • তারিখ • ঋতু • স্মৃতি</p>
+
+        <h1>
+          বাংলা ক্যালেন্ডার
+        </h1>
+
+        <p>
+          সময় • তারিখ • ঋতু • স্মৃতি
+        </p>
+
       </div>
 
     </div>
+
 
     <button
       class="icon-btn"
       onclick="enableNotification()"
       title="Notification">
+
       🔔
+
     </button>
 
   </header>
+
 
 
   <!-- HERO -->
@@ -1201,34 +2438,53 @@ body.evening .scene{
 
     <div class="hero-content">
 
-      <div class="time-label" id="timeLabel">
-        শুভ সকাল
+      <div
+        class="time-label"
+        id="timeLabel">
+
+        শুভ সকাল 🌿
+
       </div>
 
+
       <h2 id="heroTitle">
+
         ভোরের কুয়াশা মাখা সকাল
+
       </h2>
 
+
       <p id="heroText">
+
         নতুন দিনের আলোয় আজকের সময়টাকে সুন্দর করে রাখুন।
+
       </p>
 
     </div>
 
-    <div class="weather-icon" id="weatherIcon">
+
+    <div
+      class="weather-icon"
+      id="weatherIcon">
+
       🌅
+
     </div>
 
   </section>
 
 
-  <!-- TODAY -->
+
+  <!-- TODAY DATE -->
 
   <section class="date-grid">
 
+
     <div class="date-card">
 
-      <small>আজকের ইংরেজি</small>
+      <small>
+        আজকের ইংরেজি
+      </small>
 
       <strong id="todayEn">
         --
@@ -1243,7 +2499,9 @@ body.evening .scene{
 
     <div class="date-card">
 
-      <small>বাংলা তারিখ</small>
+      <small>
+        বাংলা তারিখ
+      </small>
 
       <strong id="todayBn">
         --
@@ -1258,7 +2516,9 @@ body.evening .scene{
 
     <div class="date-card">
 
-      <small>হিজরি তারিখ</small>
+      <small>
+        হিজরি তারিখ
+      </small>
 
       <strong id="todayHijri">
         --
@@ -1270,20 +2530,137 @@ body.evening .scene{
 
     </div>
 
+
   </section>
+
+
+
+  <!-- SMART CLOCK -->
+
+  <section class="section smart-time">
+
+    <div class="section-head">
+
+      <h3>
+        🕐 এখন
+      </h3>
+
+      <span id="seasonName">
+        ঋতু
+      </span>
+
+    </div>
+
+
+    <div
+      class="live-clock"
+      id="liveClock">
+
+      ০০:০০:০০
+
+    </div>
+
+
+    <div class="time-details">
+
+
+      <div>
+
+        <span>
+          ☀️ সূর্যোদয়
+        </span>
+
+        <b id="sunrise">
+          ০৬:০০
+        </b>
+
+      </div>
+
+
+      <div>
+
+        <span>
+          🌇 সূর্যাস্ত
+        </span>
+
+        <b id="sunset">
+          ১৮:০০
+        </b>
+
+      </div>
+
+
+      <div>
+
+        <span>
+          🌙 চাঁদ
+        </span>
+
+        <b id="moonPhase">
+          --
+        </b>
+
+      </div>
+
+
+    </div>
+
+  </section>
+
+
+
+  <!-- SEASON -->
+
+  <section class="section season-card">
+
+    <div
+      class="season-icon"
+      id="seasonIcon">
+
+      🌿
+
+    </div>
+
+
+    <div>
+
+      <div
+        class="season-title"
+        id="seasonTitle">
+
+        ঋতু
+
+      </div>
+
+
+      <p id="seasonText">
+
+        প্রকৃতির পরিবর্তনের সঙ্গে ক্যালেন্ডারের মুডও বদলাবে।
+
+      </p>
+
+    </div>
+
+  </section>
+
 
 
   <!-- CALENDAR -->
 
   <section class="section">
 
+
     <div class="calendar-head">
+
 
       <button
         class="nav-btn"
         onclick="changeMonth(-1)">
+
         ‹
+
       </button>
+
 
       <div class="month-title">
 
@@ -1297,23 +2674,34 @@ body.evening .scene{
 
       </div>
 
+
       <button
         class="nav-btn"
         onclick="changeMonth(1)">
+
         ›
+
       </button>
 
+
     </div>
+
 
 
     <div class="weekdays">
 
       <div>রবি</div>
+
       <div>সোম</div>
+
       <div>মঙ্গল</div>
+
       <div>বুধ</div>
+
       <div>বৃহঃ</div>
+
       <div>শুক্র</div>
+
       <div>শনি</div>
 
     </div>
@@ -1324,16 +2712,21 @@ body.evening .scene{
       id="calendar">
     </div>
 
+
   </section>
+
 
 
   <!-- SELECTED DATE -->
 
   <section class="section">
 
+
     <div class="section-head">
 
-      <h3>📌 নির্বাচিত দিন</h3>
+      <h3>
+        📌 নির্বাচিত দিন
+      </h3>
 
       <span id="selectedWeekday">
         --
@@ -1341,110 +2734,183 @@ body.evening .scene{
 
     </div>
 
+
     <div class="info">
+
 
       <div
         class="info-title"
         id="selectedTitle">
+
         আজকের দিন
+
       </div>
 
+
       <p id="selectedInfo">
+
         ক্যালেন্ডার থেকে একটি দিন নির্বাচন করুন।
+
       </p>
+
 
       <div
         class="badge"
         id="holidayBadge"
         style="display:none">
+
         🎉 সরকারি ছুটি
+
       </div>
+
 
     </div>
 
   </section>
+
 
 
   <!-- STATS -->
 
   <section class="section">
 
+
     <div class="section-head">
-      <h3>📊 আজকের তথ্য</h3>
-      <span>Live</span>
+
+      <h3>
+        📊 আজকের তথ্য
+      </h3>
+
+      <span>
+        Live
+      </span>
+
     </div>
+
 
     <div class="stats">
 
-      <div class="stat">
-        <b id="weekDayStat">--</b>
-        <span>বার</span>
-      </div>
 
       <div class="stat">
-        <b id="dayStat">--</b>
-        <span>তারিখ</span>
+
+        <b id="weekDayStat">
+          --
+        </b>
+
+        <span>
+          বার
+        </span>
+
       </div>
 
+
       <div class="stat">
-        <b id="holidayStat">--</b>
-        <span>ছুটি</span>
+
+        <b id="dayStat">
+          --
+        </b>
+
+        <span>
+          তারিখ
+        </span>
+
       </div>
+
+
+      <div class="stat">
+
+        <b id="holidayStat">
+          --
+        </b>
+
+        <span>
+          ছুটি
+        </span>
+
+      </div>
+
 
     </div>
 
   </section>
+
 
 
   <!-- PERSONAL EVENT -->
 
   <section class="section">
 
+
     <div class="section-head">
 
-      <h3>📝 ব্যক্তিগত স্মৃতি</h3>
+      <h3>
+        📝 ব্যক্তিগত স্মৃতি
+      </h3>
 
-      <span>এই ফোনে সংরক্ষিত</span>
+      <span>
+        এই ফোনে সংরক্ষিত
+      </span>
 
     </div>
 
+
     <div class="event-form">
+
 
       <input
         class="input"
         id="eventDate"
-        type="date">
+        type="date"
+      >
+
 
       <input
         class="input"
         id="eventText"
-        placeholder="আজকের কোনো স্মৃতি লিখুন...">
+        placeholder="আজকের কোনো স্মৃতি লিখুন..."
+      >
+
 
       <button
         class="primary"
         onclick="saveEvent()">
+
         💾 স্মৃতি সংরক্ষণ করুন
+
       </button>
+
 
     </div>
 
   </section>
 
 
+
   <div class="footer">
+
     বাংলা ক্যালেন্ডার • আপনার প্রতিদিনের সময়সঙ্গী ❤️
+
   </div>
+
 
 </main>
 
+
+
+<!-- SOUND -->
 
 <button
   class="sound-btn"
   id="soundBtn"
   onclick="toggleSound()">
+
   🔇
+
 </button>
 
+
+
+<!-- TOAST -->
 
 <div
   class="toast"
@@ -1452,13 +2918,15 @@ body.evening .scene{
 </div>
 
 
+
 <script>
 
-/* =====================================
+/* =========================================
    BASIC DATA
-===================================== */
+========================================= */
 
 const bnMonths = [
+
   "বৈশাখ",
   "জ্যৈষ্ঠ",
   "আষাঢ়",
@@ -1471,21 +2939,31 @@ const bnMonths = [
   "মাঘ",
   "ফাল্গুন",
   "চৈত্র"
+
 ];
 
-const bnDigits = "০১২৩৪৫৬৭৮৯";
+
+const bnDigits =
+  "০১২৩৪৫৬৭৮৯";
+
 
 function bnNumber(n){
+
   return String(n)
-    .replace(/\d/g,d=>bnDigits[d]);
+    .replace(
+      /\d/g,
+      d => bnDigits[d]
+    );
+
 }
 
 
-/* =====================================
+/* =========================================
    WEEKDAYS
-===================================== */
+========================================= */
 
 const weekdaysBn = [
+
   "রবিবার",
   "সোমবার",
   "মঙ্গলবার",
@@ -1493,14 +2971,16 @@ const weekdaysBn = [
   "বৃহস্পতিবার",
   "শুক্রবার",
   "শনিবার"
+
 ];
 
 
-/* =====================================
-   MONTHS EN
-===================================== */
+/* =========================================
+   ENGLISH MONTHS
+========================================= */
 
 const monthsEn = [
+
   "January",
   "February",
   "March",
@@ -1513,16 +2993,18 @@ const monthsEn = [
   "October",
   "November",
   "December"
+
 ];
 
 
-/* =====================================
+/* =========================================
    2026 HOLIDAYS
-===================================== */
+========================================= */
 
 const holidays = {
 
-  "2026-02-04":"শবে বরাত",
+  "2026-02-04":
+    "শবে বরাত",
 
   "2026-02-21":
     "শহীদ দিবস ও আন্তর্জাতিক মাতৃভাষা দিবস",
@@ -1604,129 +3086,210 @@ const holidays = {
 
   "2026-12-31":
     "ব্যাংক হলিডে"
+
 };
 
 
-/* =====================================
-   DATE HELPERS
-===================================== */
+/* =========================================
+   HELPERS
+========================================= */
 
 function pad(n){
-  return String(n).padStart(2,"0");
+
+  return String(n)
+    .padStart(2,"0");
+
 }
+
 
 function dateKey(date){
 
-  return date.getFullYear()
+  return (
+
+    date.getFullYear()
     + "-"
     + pad(date.getMonth()+1)
     + "-"
-    + pad(date.getDate());
+    + pad(date.getDate())
+
+  );
 
 }
 
 
-/* =====================================
-   APPROX BANGLA DATE
-===================================== */
+/* =========================================
+   BANGLA DATE
+========================================= */
 
 function getBanglaDate(date){
 
-  const year = date.getFullYear();
+  const year =
+    date.getFullYear();
 
-  const start = new Date(year,3,14);
+  const start =
+    new Date(
+      year,
+      3,
+      14
+    );
 
   let diff =
     Math.floor(
-      (date-start)/(1000*60*60*24)
+      (
+        date-start
+      ) /
+      (
+        1000*60*60*24
+      )
     );
 
-  let bnYear = year - 593;
+  let bnYear =
+    year-593;
+
 
   if(diff < 0){
 
     bnYear--;
 
     const previousStart =
-      new Date(year-1,3,14);
+      new Date(
+        year-1,
+        3,
+        14
+      );
 
     diff =
       Math.floor(
-        (date-previousStart)/
-        (1000*60*60*24)
+        (
+          date-previousStart
+        ) /
+        (
+          1000*60*60*24
+        )
       );
+
   }
 
-  let monthIndex = 0;
-  let day = diff + 1;
 
-  const monthLengths =
-    [31,31,31,31,31,30,30,30,30,30,30,30];
+  let monthIndex=0;
 
-  for(let i=0;i<12;i++){
+  let day=
+    diff+1;
 
-    if(day > monthLengths[i]){
 
-      day -= monthLengths[i];
+  const monthLengths = [
 
-    }else{
+    31,31,31,31,
+    31,30,30,30,
+    30,30,30,30
 
-      monthIndex = i;
+  ];
+
+
+  for(
+    let i=0;
+    i<12;
+    i++
+  ){
+
+    if(
+      day >
+      monthLengths[i]
+    ){
+
+      day -=
+        monthLengths[i];
+
+    }
+    else{
+
+      monthIndex=i;
+
       break;
 
     }
+
   }
 
+
   return {
+
     year:bnYear,
-    month:bnMonths[monthIndex],
+
+    month:
+      bnMonths[monthIndex],
+
     monthIndex,
+
     day
+
   };
+
 }
 
 
-/* =====================================
-   APPROX HIJRI
-===================================== */
+/* =========================================
+   HIJRI
+========================================= */
 
 function getHijri(date){
 
   const base =
-    new Date(2025,2,1);
+    new Date(
+      "2025-03-01T00:00:00"
+    );
 
   const diff =
     Math.floor(
-      (date-base)/
-      (1000*60*60*24)
+      (
+        date-base
+      ) /
+      (
+        1000*60*60*24
+      )
     );
 
-  let hYear = 1446;
-  let hMonth = 9;
-  let hDay = 1;
 
-  let remaining = diff;
+  let hYear=1446;
 
-  while(remaining > 0){
+  let hMonth=9;
+
+  let hDay=1;
+
+  let remaining=diff;
+
+
+  while(
+    remaining>0
+  ){
 
     hDay++;
+
     remaining--;
 
-    if(hDay > 30){
 
-      hDay = 1;
+    if(hDay>30){
+
+      hDay=1;
+
       hMonth++;
 
-      if(hMonth > 12){
 
-        hMonth = 1;
+      if(hMonth>12){
+
+        hMonth=1;
+
         hYear++;
 
       }
+
     }
+
   }
 
+
   const months = [
+
     "মুহররম",
     "সফর",
     "রবিউল আউয়াল",
@@ -1739,81 +3302,143 @@ function getHijri(date){
     "শাওয়াল",
     "জিলকদ",
     "জিলহজ"
+
   ];
 
+
   return {
+
     year:hYear,
-    month:months[hMonth-1],
+
+    month:
+      months[hMonth-1],
+
     day:hDay
+
   };
+
 }
 
 
-/* =====================================
+/* =========================================
    TODAY
-===================================== */
+========================================= */
 
-const now = new Date();
+const now =
+  new Date();
 
-document.getElementById("eventDate")
-  .value = dateKey(now);
+
+document.getElementById(
+  "eventDate"
+).value =
+  dateKey(now);
+
 
 function updateToday(){
 
-  const today = new Date();
+  const today =
+    new Date();
+
 
   const bn =
     getBanglaDate(today);
 
+
   const hijri =
     getHijri(today);
 
-  document.getElementById("todayEn")
-    .textContent =
-    bnNumber(today.getDate())
+
+  document.getElementById(
+    "todayEn"
+  ).textContent =
+
+    bnNumber(
+      today.getDate()
+    )
     + " "
-    + monthsEn[today.getMonth()];
+    +
+    monthsEn[
+      today.getMonth()
+    ];
 
-  document.getElementById("todayEnFull")
-    .textContent =
-    bnNumber(today.getFullYear());
 
-  document.getElementById("todayBn")
-    .textContent =
-    bnNumber(bn.day);
+  document.getElementById(
+    "todayEnFull"
+  ).textContent =
 
-  document.getElementById("todayBnMonth")
-    .textContent =
+    bnNumber(
+      today.getFullYear()
+    );
+
+
+  document.getElementById(
+    "todayBn"
+  ).textContent =
+
+    bnNumber(
+      bn.day
+    );
+
+
+  document.getElementById(
+    "todayBnMonth"
+  ).textContent =
+
     bn.month
     + " "
-    + bnNumber(bn.year);
+    +
+    bnNumber(
+      bn.year
+    );
 
-  document.getElementById("todayHijri")
-    .textContent =
-    bnNumber(hijri.day)
+
+  document.getElementById(
+    "todayHijri"
+  ).textContent =
+
+    bnNumber(
+      hijri.day
+    )
     + " "
-    + hijri.month;
+    +
+    hijri.month;
 
-  document.getElementById("weekDayStat")
-    .textContent =
-    weekdaysBn[today.getDay()];
 
-  document.getElementById("dayStat")
-    .textContent =
-    bnNumber(today.getDate());
+  document.getElementById(
+    "weekDayStat"
+  ).textContent =
 
-  document.getElementById("holidayStat")
-    .textContent =
-    Object.keys(holidays).length;
+    weekdaysBn[
+      today.getDay()
+    ];
+
+
+  document.getElementById(
+    "dayStat"
+  ).textContent =
+
+    bnNumber(
+      today.getDate()
+    );
+
+
+  document.getElementById(
+    "holidayStat"
+  ).textContent =
+
+    Object.keys(
+      holidays
+    ).length;
 
 }
+
 
 updateToday();
 
 
-/* =====================================
+/* =========================================
    CALENDAR
-===================================== */
+========================================= */
 
 let currentMonth =
   now.getMonth();
@@ -1825,9 +3450,13 @@ let currentYear =
 function renderCalendar(){
 
   const calendar =
-    document.getElementById("calendar");
+    document.getElementById(
+      "calendar"
+    );
+
 
   calendar.innerHTML="";
+
 
   const firstDay =
     new Date(
@@ -1836,6 +3465,7 @@ function renderCalendar(){
       1
     ).getDay();
 
+
   const totalDays =
     new Date(
       currentYear,
@@ -1843,31 +3473,65 @@ function renderCalendar(){
       0
     ).getDate();
 
-  document.getElementById("monthTitle")
-    .textContent =
-    monthsEn[currentMonth];
 
-  document.getElementById("monthSub")
-    .textContent =
+  document.getElementById(
+    "monthTitle"
+  ).textContent =
+
+    monthsEn[
+      currentMonth
+    ];
+
+
+  document.getElementById(
+    "monthSub"
+  ).textContent =
+
     bnMonths[
-      ((currentMonth+8)%12)
-    ] || "বাংলা মাস";
+      (currentMonth+8)%12
+    ];
 
-  for(let i=0;i<firstDay;i++){
+
+  for(
+    let i=0;
+    i<firstDay;
+    i++
+  ){
 
     const blank =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
-    calendar.appendChild(blank);
+    calendar.appendChild(
+      blank
+    );
+
   }
 
 
-  for(let day=1;day<=totalDays;day++){
+  const events =
+    JSON.parse(
+      localStorage.getItem(
+        "rabbiCalendarEvents"
+      ) || "{}"
+    );
+
+
+  for(
+    let day=1;
+    day<=totalDays;
+    day++
+  ){
 
     const cell =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
+
 
     cell.className="day";
+
 
     const date =
       new Date(
@@ -1876,36 +3540,54 @@ function renderCalendar(){
         day
       );
 
+
     const key =
       dateKey(date);
 
+
     const bn =
-      getBanglaDate(date);
+      getBanglaDate(
+        date
+      );
+
 
     if(
-      date.toDateString() ===
+      date.toDateString()
+      ===
       now.toDateString()
     ){
 
-      cell.classList.add("today");
-    }
-
-    if(holidays[key]){
-      cell.classList.add("holiday");
-    }
-
-    const events =
-      JSON.parse(
-        localStorage.getItem(
-          "rabbiCalendarEvents"
-        ) || "{}"
+      cell.classList.add(
+        "today"
       );
 
-    if(events[key]){
-      cell.classList.add("event");
     }
 
+
+    if(
+      holidays[key]
+    ){
+
+      cell.classList.add(
+        "holiday"
+      );
+
+    }
+
+
+    if(
+      events[key]
+    ){
+
+      cell.classList.add(
+        "event"
+      );
+
+    }
+
+
     cell.innerHTML = `
+
       <div class="day-num">
         ${bnNumber(day)}
       </div>
@@ -1913,16 +3595,27 @@ function renderCalendar(){
       <div class="day-bn">
         ${bnNumber(bn.day)}
       </div>
+
     `;
 
+
     cell.style.animationDelay =
-      (day * .018) + "s";
+      (day*.018)+"s";
+
 
     cell.onclick =
-      ()=>selectDate(date);
+      () =>
+        selectDate(
+          date
+        );
 
-    calendar.appendChild(cell);
+
+    calendar.appendChild(
+      cell
+    );
+
   }
+
 }
 
 
@@ -1930,86 +3623,133 @@ function changeMonth(step){
 
   currentMonth += step;
 
-  if(currentMonth < 0){
+
+  if(
+    currentMonth<0
+  ){
 
     currentMonth=11;
+
     currentYear--;
 
   }
 
-  if(currentMonth > 11){
+
+  if(
+    currentMonth>11
+  ){
 
     currentMonth=0;
+
     currentYear++;
 
   }
 
+
   renderCalendar();
 
   playClick();
+
 }
 
 
-/* =====================================
+/* =========================================
    SELECT DATE
-===================================== */
+========================================= */
 
 function selectDate(date){
 
   const key =
     dateKey(date);
 
+
   const bn =
     getBanglaDate(date);
+
 
   const hijri =
     getHijri(date);
 
-  document.getElementById("selectedWeekday")
-    .textContent =
-    weekdaysBn[date.getDay()];
 
-  document.getElementById("selectedTitle")
-    .textContent =
-    bnNumber(date.getDate())
+  document.getElementById(
+    "selectedWeekday"
+  ).textContent =
+
+    weekdaysBn[
+      date.getDay()
+    ];
+
+
+  document.getElementById(
+    "selectedTitle"
+  ).textContent =
+
+    bnNumber(
+      date.getDate()
+    )
     + " "
-    + monthsEn[date.getMonth()]
+    +
+    monthsEn[
+      date.getMonth()
+    ]
     + " "
-    + date.getFullYear();
+    +
+    date.getFullYear();
+
 
   let text =
+
     "বাংলা: "
-    + bnNumber(bn.day)
+    +
+    bnNumber(bn.day)
     + " "
-    + bn.month
+    +
+    bn.month
     + " "
-    + bnNumber(bn.year)
+    +
+    bnNumber(bn.year)
     + " বঙ্গাব্দ";
 
-  text +=
-    "\nহিজরি: "
-    + bnNumber(hijri.day)
-    + " "
-    + hijri.month
-    + " "
-    + bnNumber(hijri.year);
 
-  if(holidays[key]){
+  text +=
+
+    "\nহিজরি: "
+    +
+    bnNumber(hijri.day)
+    + " "
+    +
+    hijri.month
+    + " "
+    +
+    bnNumber(hijri.year);
+
+
+  if(
+    holidays[key]
+  ){
 
     text +=
+
       "\n\n🎉 "
-      + holidays[key];
+      +
+      holidays[key];
+
 
     document.getElementById(
       "holidayBadge"
-    ).style.display="inline-block";
+    ).style.display =
+      "inline-block";
 
-  }else{
-
-    document.getElementById(
-      "holidayBadge"
-    ).style.display="none";
   }
+  else{
+
+    document.getElementById(
+      "holidayBadge"
+    ).style.display =
+      "none";
+
+  }
+
 
   const events =
     JSON.parse(
@@ -2018,23 +3758,34 @@ function selectDate(date){
       ) || "{}"
     );
 
-  if(events[key]){
+
+  if(
+    events[key]
+  ){
 
     text +=
+
       "\n\n📝 স্মৃতি: "
-      + events[key];
+      +
+      events[key];
+
   }
 
-  document.getElementById("selectedInfo")
-    .innerText = text;
+
+  document.getElementById(
+    "selectedInfo"
+  ).innerText =
+    text;
+
 
   playClick();
+
 }
 
 
-/* =====================================
+/* =========================================
    SAVE EVENT
-===================================== */
+========================================= */
 
 function saveEvent(){
 
@@ -2043,19 +3794,26 @@ function saveEvent(){
       "eventDate"
     ).value;
 
+
   const text =
     document.getElementById(
       "eventText"
     ).value.trim();
 
-  if(!date || !text){
+
+  if(
+    !date ||
+    !text
+  ){
 
     showToast(
       "⚠️ তারিখ ও স্মৃতি লিখুন"
     );
 
     return;
+
   }
+
 
   const events =
     JSON.parse(
@@ -2064,20 +3822,25 @@ function saveEvent(){
       ) || "{}"
     );
 
+
   events[date]=text;
+
 
   localStorage.setItem(
     "rabbiCalendarEvents",
     JSON.stringify(events)
   );
 
+
   document.getElementById(
     "eventText"
   ).value="";
 
+
   showToast(
     "💾 স্মৃতি সংরক্ষণ হয়েছে"
   );
+
 
   renderCalendar();
 
@@ -2086,14 +3849,15 @@ function saveEvent(){
 }
 
 
-/* =====================================
+/* =========================================
    TIME MOOD
-===================================== */
+========================================= */
 
 function updateMood(){
 
   const hour =
     new Date().getHours();
+
 
   document.body.classList.remove(
     "morning",
@@ -2102,86 +3866,146 @@ function updateMood(){
     "night"
   );
 
+
   let label;
   let title;
   let text;
   let icon;
 
-  if(hour >= 5 && hour < 9){
 
-    document.body.classList.add("morning");
+  if(
+    hour>=5 &&
+    hour<9
+  ){
 
-    label="শুভ সকাল 🌿";
+    document.body.classList.add(
+      "morning"
+    );
 
-    title="ভোরের কুয়াশা মাখা সকাল";
 
-    text=
+    label =
+      "শুভ সকাল 🌿";
+
+
+    title =
+      "ভোরের কুয়াশা মাখা সকাল";
+
+
+    text =
       "কুয়াশার নরম পর্দা সরিয়ে নতুন দিনের আলো আসছে।";
+
 
     icon="🌅";
 
   }
-  else if(hour >= 9 && hour < 17){
 
-    document.body.classList.add("day");
 
-    label="শুভ দিন ☀️";
+  else if(
+    hour>=9 &&
+    hour<17
+  ){
 
-    title="আজকের দিনটা সুন্দর হোক";
+    document.body.classList.add(
+      "day"
+    );
 
-    text=
+
+    label =
+      "শুভ দিন ☀️";
+
+
+    title =
+      "আজকের দিনটা সুন্দর হোক";
+
+
+    text =
       "আলো, সময় আর ছোট ছোট মুহূর্ত—সবকিছু উপভোগ করুন।";
+
 
     icon="☀️";
 
   }
-  else if(hour >= 17 && hour < 20){
 
-    document.body.classList.add("evening");
 
-    label="শুভ সন্ধ্যা 🌇";
+  else if(
+    hour>=17 &&
+    hour<20
+  ){
 
-    title="সন্ধ্যার নরম আলো";
+    document.body.classList.add(
+      "evening"
+    );
 
-    text=
+
+    label =
+      "শুভ সন্ধ্যা 🌇";
+
+
+    title =
+      "সন্ধ্যার নরম আলো";
+
+
+    text =
       "দিন শেষে আকাশের রঙ বদলে যাচ্ছে। একটু নিজের জন্য সময় রাখুন।";
+
 
     icon="🌇";
 
   }
+
+
   else{
 
-    document.body.classList.add("night");
+    document.body.classList.add(
+      "night"
+    );
 
-    label="শুভ রাত্রি 🌙";
 
-    title="নীরব রাতের আকাশ";
+    label =
+      "শুভ রাত্রি 🌙";
 
-    text=
+
+    title =
+      "নীরব রাতের আকাশ";
+
+
+    text =
       "চাঁদের আলো আর নক্ষত্রের নিচে আজকের দিনটাকে বিদায় জানান।";
+
 
     icon="🌙";
 
   }
 
+
   document.getElementById(
     "timeLabel"
-  ).textContent=label;
+  ).textContent =
+    label;
+
 
   document.getElementById(
     "heroTitle"
-  ).textContent=title;
+  ).textContent =
+    title;
+
 
   document.getElementById(
     "heroText"
-  ).textContent=text;
+  ).textContent =
+    text;
+
 
   document.getElementById(
     "weatherIcon"
-  ).textContent=icon;
+  ).textContent =
+    icon;
+
 }
 
+
 updateMood();
+
 
 setInterval(
   updateMood,
@@ -2189,171 +4013,703 @@ setInterval(
 );
 
 
-/* =====================================
+/* =========================================
+   LIVE DIGITAL CLOCK
+========================================= */
+
+function updateLiveClock(){
+
+  const d =
+    new Date();
+
+
+  let h =
+    d.getHours();
+
+
+  const m =
+    d.getMinutes();
+
+
+  const s =
+    d.getSeconds();
+
+
+  const ampm =
+    h>=12
+      ? "PM"
+      : "AM";
+
+
+  h =
+    h%12;
+
+
+  if(h===0){
+
+    h=12;
+
+  }
+
+
+  const time =
+
+    pad(h)
+    + ":"
+    +
+    pad(m)
+    + ":"
+    +
+    pad(s);
+
+
+  document.getElementById(
+    "liveClock"
+  ).textContent =
+
+    bnNumber(time)
+    + " "
+    +
+    ampm;
+
+}
+
+
+updateLiveClock();
+
+
+setInterval(
+  updateLiveClock,
+  1000
+);
+
+
+/* =========================================
+   SEASON
+========================================= */
+
+function updateSeason(){
+
+  const month =
+    new Date().getMonth()+1;
+
+
+  let name="";
+  let icon="";
+  let text="";
+
+
+  if(
+    month>=3 &&
+    month<=4
+  ){
+
+    name =
+      "বসন্ত 🌸";
+
+    icon="🌸";
+
+    text =
+      "ফুলের গন্ধ আর নতুন পাতায় প্রকৃতি নতুন রূপ নেয়।";
+
+  }
+
+
+  else if(
+    month>=5 &&
+    month<=6
+  ){
+
+    name =
+      "গ্রীষ্ম ☀️";
+
+    icon="☀️";
+
+    text =
+      "উজ্জ্বল রোদ, কালবৈশাখী আর আম-কাঁঠালের মৌসুম।";
+
+  }
+
+
+  else if(
+    month>=7 &&
+    month<=8
+  ){
+
+    name =
+      "বর্ষা 🌧️";
+
+    icon="🌧️";
+
+    text =
+      "বৃষ্টির শব্দ আর ভেজা মাটির গন্ধে প্রকৃতি সজীব।";
+
+  }
+
+
+  else if(
+    month>=9 &&
+    month<=10
+  ){
+
+    name =
+      "শরৎ ☁️";
+
+    icon="☁️";
+
+    text =
+      "সাদা মেঘ আর কাশফুলে শরতের আকাশ হয়ে ওঠে অপূর্ব।";
+
+  }
+
+
+  else if(
+    month>=11 &&
+    month<=12
+  ){
+
+    name =
+      "হেমন্ত 🌾";
+
+    icon="🌾";
+
+    text =
+      "ধানের গন্ধ আর শিশিরে ভোরের প্রকৃতি হয়ে ওঠে শান্ত।";
+
+  }
+
+
+  else{
+
+    name =
+      "শীত ❄️";
+
+    icon="❄️";
+
+    text =
+      "কুয়াশা, শিশির আর ঠান্ডা সকালের মায়াবী সময়।";
+
+  }
+
+
+  document.getElementById(
+    "seasonName"
+  ).textContent =
+    name;
+
+
+  document.getElementById(
+    "seasonTitle"
+  ).textContent =
+    name;
+
+
+  document.getElementById(
+    "seasonIcon"
+  ).textContent =
+    icon;
+
+
+  document.getElementById(
+    "seasonText"
+  ).textContent =
+    text;
+
+}
+
+
+updateSeason();
+
+
+/* =========================================
+   MOON PHASE
+========================================= */
+
+function calculateMoonPhase(){
+
+  const knownNewMoon =
+    new Date(
+      "2000-01-06T18:14:00Z"
+    );
+
+
+  const today =
+    new Date();
+
+
+  const diff =
+    (
+      today-knownNewMoon
+    ) /
+    (
+      1000*60*60*24
+    );
+
+
+  const cycle =
+    29.530588;
+
+
+  const age =
+    (
+      (diff%cycle)+cycle
+    )%cycle;
+
+
+  let phase="";
+  let icon="";
+
+
+  if(
+    age<1.85
+  ){
+
+    phase =
+      "অমাবস্যা";
+
+    icon="🌑";
+
+  }
+
+
+  else if(
+    age<7.38
+  ){
+
+    phase =
+      "শুক্লপক্ষ";
+
+    icon="🌒";
+
+  }
+
+
+  else if(
+    age<9.22
+  ){
+
+    phase =
+      "প্রথম চতুর্থাংশ";
+
+    icon="🌓";
+
+  }
+
+
+  else if(
+    age<14.77
+  ){
+
+    phase =
+      "শুক্ল গিবাস";
+
+    icon="🌔";
+
+  }
+
+
+  else if(
+    age<16.61
+  ){
+
+    phase =
+      "পূর্ণিমা";
+
+    icon="🌕";
+
+  }
+
+
+  else if(
+    age<22.15
+  ){
+
+    phase =
+      "কৃষ্ণ গিবাস";
+
+    icon="🌖";
+
+  }
+
+
+  else if(
+    age<23.99
+  ){
+
+    phase =
+      "শেষ চতুর্থাংশ";
+
+    icon="🌗";
+
+  }
+
+
+  else{
+
+    phase =
+      "কৃষ্ণপক্ষ";
+
+    icon="🌘";
+
+  }
+
+
+  document.getElementById(
+    "moonPhase"
+  ).textContent =
+
+    icon
+    + " "
+    +
+    phase;
+
+}
+
+
+calculateMoonPhase();
+
+
+/* =========================================
+   SUNRISE / SUNSET VISUAL
+========================================= */
+
+function updateSunTime(){
+
+  const hour =
+    new Date().getHours();
+
+
+  let sunrise =
+    "০৬:০০";
+
+
+  let sunset =
+    "১৮:০০";
+
+
+  if(
+    hour>=5 &&
+    hour<8
+  ){
+
+    sunrise =
+      "০৫:৩০";
+
+  }
+
+
+  if(
+    hour>=16 &&
+    hour<20
+  ){
+
+    sunset =
+      "১৮:২০";
+
+  }
+
+
+  document.getElementById(
+    "sunrise"
+  ).textContent =
+    sunrise;
+
+
+  document.getElementById(
+    "sunset"
+  ).textContent =
+    sunset;
+
+}
+
+
+updateSunTime();
+
+
+/* =========================================
    STARS
-===================================== */
+========================================= */
 
 function createStars(){
 
   const box =
-    document.getElementById("stars");
+    document.getElementById(
+      "stars"
+    );
 
-  for(let i=0;i<90;i++){
+
+  for(
+    let i=0;
+    i<90;
+    i++
+  ){
 
     const star =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
-    star.className="star";
+
+    star.className =
+      "star";
+
 
     star.style.left =
       Math.random()*100+"%";
 
+
     star.style.top =
       Math.random()*65+"%";
+
 
     star.style.animationDelay =
       Math.random()*3+"s";
 
+
     star.style.opacity =
       Math.random();
 
-    box.appendChild(star);
+
+    box.appendChild(
+      star
+    );
+
   }
+
 }
+
 
 createStars();
 
 
-/* =====================================
+/* =========================================
    PARTICLES
-===================================== */
+========================================= */
 
 function createParticles(){
 
   const box =
-    document.getElementById("particles");
+    document.getElementById(
+      "particles"
+    );
 
-  for(let i=0;i<35;i++){
+
+  for(
+    let i=0;
+    i<45;
+    i++
+  ){
 
     const p =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
-    p.className="particle";
+
+    p.className =
+      "particle";
+
 
     p.style.left =
       Math.random()*100+"%";
 
+
+    p.style.width =
+      (
+        2+
+        Math.random()*4
+      )+"px";
+
+
+    p.style.height =
+      p.style.width;
+
+
     p.style.animationDuration =
-      (10+Math.random()*20)+"s";
+      (
+        10+
+        Math.random()*20
+      )+"s";
+
 
     p.style.animationDelay =
-      (-Math.random()*25)+"s";
+      (
+        -Math.random()*25
+      )+"s";
+
 
     p.style.opacity =
-      .2+Math.random()*.6;
+      .2+
+      Math.random()*.6;
 
-    box.appendChild(p);
+
+    box.appendChild(
+      p
+    );
+
   }
+
 }
+
 
 createParticles();
 
 
-/* =====================================
+/* =========================================
    LEAVES
-===================================== */
+========================================= */
 
 function createLeaves(){
 
   const box =
-    document.getElementById("leaves");
+    document.getElementById(
+      "leaves"
+    );
 
-  for(let i=0;i<14;i++){
+
+  for(
+    let i=0;
+    i<14;
+    i++
+  ){
 
     const leaf =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
-    leaf.className="leaf";
+
+    leaf.className =
+      "leaf";
+
 
     leaf.style.left =
       Math.random()*100+"%";
 
+
     leaf.style.animationDuration =
-      (9+Math.random()*14)+"s";
+      (
+        9+
+        Math.random()*14
+      )+"s";
+
 
     leaf.style.animationDelay =
-      (-Math.random()*20)+"s";
+      (
+        -Math.random()*20
+      )+"s";
 
-    leaf.style.transform =
-      `rotate(${Math.random()*360}deg)`;
 
-    box.appendChild(leaf);
+    box.appendChild(
+      leaf
+    );
+
   }
+
 }
+
 
 createLeaves();
 
 
-/* =====================================
+/* =========================================
    RAIN
-===================================== */
+========================================= */
 
 function createRain(){
 
   const box =
-    document.getElementById("rain");
+    document.getElementById(
+      "rain"
+    );
 
-  for(let i=0;i<55;i++){
+
+  for(
+    let i=0;
+    i<60;
+    i++
+  ){
 
     const drop =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
-    drop.className="drop";
+
+    drop.className =
+      "drop";
+
 
     drop.style.left =
       Math.random()*100+"%";
 
+
     drop.style.animationDuration =
-      (.5+Math.random()*.8)+"s";
+      (
+        .5+
+        Math.random()*.8
+      )+"s";
+
 
     drop.style.animationDelay =
-      (-Math.random()*2)+"s";
+      (
+        -Math.random()*2
+      )+"s";
 
-    box.appendChild(drop);
+
+    box.appendChild(
+      drop
+    );
+
   }
+
 }
+
 
 createRain();
 
 
-/* =====================================
+/* =========================================
    RAIN MOOD
-===================================== */
+========================================= */
 
 function rainMood(){
 
   const minute =
     new Date().getMinutes();
 
+
   const rain =
-    document.getElementById("rain");
+    document.getElementById(
+      "rain"
+    );
+
 
   /*
-    প্রতি ৭ মিনিটে কিছু সময়
-    হালকা বৃষ্টির animation।
+    প্রতি ৭ মিনিটের শুরুতে
+    খুব হালকা rain animation।
   */
 
-  if(minute % 7 === 0){
+  if(
+    minute%7===0
+  ){
 
-    rain.style.opacity=".45";
+    rain.style.opacity =
+      ".42";
 
-  }else{
-
-    rain.style.opacity="0";
   }
+  else{
+
+    rain.style.opacity =
+      "0";
+
+  }
+
 }
 
+
 rainMood();
+
 
 setInterval(
   rainMood,
@@ -2361,25 +4717,30 @@ setInterval(
 );
 
 
-/* =====================================
-   SOUND ENGINE
-===================================== */
+/* =========================================
+   AUDIO
+========================================= */
 
-let soundEnabled=false;
+let soundEnabled =
+  false;
 
-let audioContext=null;
+
+let audioContext =
+  null;
+
 
 function initAudio(){
 
   if(!audioContext){
 
     audioContext =
-      new (
+      new(
         window.AudioContext ||
         window.webkitAudioContext
       )();
 
   }
+
 }
 
 
@@ -2389,235 +4750,349 @@ function tone(
   volume=.04
 ){
 
-  if(!soundEnabled) return;
+  if(!soundEnabled)
+    return;
+
 
   initAudio();
+
 
   const oscillator =
     audioContext.createOscillator();
 
+
   const gain =
     audioContext.createGain();
 
-  oscillator.type="sine";
+
+  oscillator.type =
+    "sine";
+
 
   oscillator.frequency.value =
     frequency;
+
 
   gain.gain.setValueAtTime(
     volume,
     audioContext.currentTime
   );
 
+
   gain.gain.exponentialRampToValueAtTime(
     .001,
-    audioContext.currentTime+duration
+    audioContext.currentTime+
+    duration
   );
 
-  oscillator.connect(gain);
+
+  oscillator.connect(
+    gain
+  );
+
 
   gain.connect(
     audioContext.destination
   );
 
+
   oscillator.start();
+
 
   oscillator.stop(
     audioContext.currentTime+
     duration
   );
+
 }
 
 
 function playClick(){
 
-  tone(520,.06,.025);
+  tone(
+    520,
+    .06,
+    .025
+  );
+
 }
 
 
 function playSuccess(){
 
-  tone(523,.12,.035);
+  tone(
+    523,
+    .12,
+    .035
+  );
+
 
   setTimeout(
-    ()=>tone(659,.15,.035),
+    () =>
+      tone(
+        659,
+        .15,
+        .035
+      ),
     100
   );
 
+
   setTimeout(
-    ()=>tone(784,.18,.035),
+    () =>
+      tone(
+        784,
+        .18,
+        .035
+      ),
     220
   );
+
 }
 
 
-/* =====================================
-   SOUND BUTTON
-===================================== */
+/* =========================================
+   SOUND TOGGLE
+========================================= */
 
 function toggleSound(){
 
-  soundEnabled=!soundEnabled;
+  soundEnabled =
+    !soundEnabled;
 
-  if(soundEnabled){
+
+  if(
+    soundEnabled
+  ){
 
     initAudio();
 
-    if(audioContext.state==="suspended"){
+
+    if(
+      audioContext.state ===
+      "suspended"
+    ){
+
       audioContext.resume();
+
     }
+
 
     document.getElementById(
       "soundBtn"
-    ).textContent="🔊";
+    ).textContent =
+      "🔊";
+
 
     showToast(
-      "🔊 হালকা ambient sound চালু"
+      "🔊 হালকা sound চালু"
     );
+
 
     playSuccess();
 
-  }else{
+  }
+  else{
 
     document.getElementById(
       "soundBtn"
-    ).textContent="🔇";
+    ).textContent =
+      "🔇";
+
 
     showToast(
       "🔇 sound বন্ধ"
     );
+
   }
+
 }
 
 
-/* =====================================
+/* =========================================
    NOTIFICATION
-===================================== */
+========================================= */
 
 async function enableNotification(){
 
-  if(!("Notification" in window)){
+  if(
+    !(
+      "Notification"
+      in
+      window
+    )
+  ){
 
     showToast(
       "এই ব্রাউজারে notification নেই"
     );
 
     return;
+
   }
+
 
   const permission =
     await Notification.requestPermission();
 
-  if(permission==="granted"){
+
+  if(
+    permission ===
+    "granted"
+  ){
 
     showToast(
       "🔔 Notification চালু হয়েছে"
     );
 
-  }else{
+  }
+  else{
 
     showToast(
       "Notification অনুমতি দেওয়া হয়নি"
     );
+
   }
+
 }
 
 
-/* =====================================
+/* =========================================
    HOLIDAY REMINDER
-===================================== */
+========================================= */
 
 function checkHoliday(){
 
   if(
-    !("Notification" in window) ||
-    Notification.permission!=="granted"
+    !(
+      "Notification"
+      in
+      window
+    )
+    ||
+    Notification.permission !==
+    "granted"
   ){
+
     return;
+
   }
 
-  const key =
-    dateKey(new Date());
 
-  if(holidays[key]){
+  const key =
+    dateKey(
+      new Date()
+    );
+
+
+  if(
+    holidays[key]
+  ){
 
     new Notification(
       "বাংলা ক্যালেন্ডার 🎉",
       {
         body:
           "আজ "
-          + holidays[key],
-        icon:"/icon-192.png"
+          +
+          holidays[key],
+
+        icon:
+          "/icon-192.png"
       }
     );
+
   }
+
 }
 
 
-/* =====================================
+/* =========================================
    TOAST
-===================================== */
+========================================= */
 
 let toastTimer;
+
 
 function showToast(message){
 
   const toast =
-    document.getElementById("toast");
+    document.getElementById(
+      "toast"
+    );
 
-  toast.textContent=message;
 
-  toast.classList.add("show");
+  toast.textContent =
+    message;
 
-  clearTimeout(toastTimer);
+
+  toast.classList.add(
+    "show"
+  );
+
+
+  clearTimeout(
+    toastTimer
+  );
+
 
   toastTimer =
     setTimeout(
-      ()=>{
-        toast.classList.remove("show");
+      () => {
+
+        toast.classList.remove(
+          "show"
+        );
+
       },
       2500
     );
+
 }
 
 
-/* =====================================
+/* =========================================
    VIBRATION
-===================================== */
+========================================= */
 
 function vibrate(){
 
   if(
-    "vibrate" in navigator
+    "vibrate"
+    in
+    navigator
   ){
-    navigator.vibrate(20);
+
+    navigator.vibrate(
+      20
+    );
+
   }
+
 }
 
 
-/* =====================================
-   CLICK EFFECT
-===================================== */
-
 document.addEventListener(
   "click",
-  e=>{
+  event => {
 
     if(
-      e.target.closest(
+      event.target.closest(
         "button,.day"
       )
     ){
 
       vibrate();
+
     }
+
   }
 );
 
 
-/* =====================================
-   INITIAL RENDER
-===================================== */
+/* =========================================
+   INITIALIZE
+========================================= */
 
 renderCalendar();
 
@@ -2626,38 +5101,21 @@ selectDate(now);
 checkHoliday();
 
 
-/* =====================================
-   LIVE CLOCK
-===================================== */
-
-function liveClock(){
-
-  const d =
-    new Date();
-
-  const time =
-    d.toLocaleTimeString(
-      "bn-BD",
-      {
-        hour:"2-digit",
-        minute:"2-digit",
-        second:"2-digit"
-      }
-    );
-
-  document.getElementById(
-    "timeLabel"
-  ).setAttribute(
-    "data-time",
-    time
-  );
-}
-
-liveClock();
+/* =========================================
+   LIVE REFRESH
+========================================= */
 
 setInterval(
-  liveClock,
-  1000
+  () => {
+
+    updateToday();
+
+    updateSeason();
+
+    calculateMoonPhase();
+
+  },
+  60000
 );
 
 </script>
