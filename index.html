@@ -1,438 +1,2302 @@
 <!DOCTYPE html>
 <html lang="bn">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#151126">
 
-<title>বাংলা ক্যালেন্ডার 🇧🇩</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+  name="theme-color"
+  content="#10251c"
+>
+
+<meta
+  name="mobile-web-app-capable"
+  content="yes"
+>
+
+<meta
+  name="apple-mobile-web-app-capable"
+  content="yes"
+>
+
+<link
+  rel="manifest"
+  href="/manifest.json"
+>
+
+<title>বাংলা ক্যালেন্ডার • Rabbi</title>
+
 
 <style>
+
+/* ==================================================
+   RESET
+================================================== */
+
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:Arial,"Noto Sans Bengali",sans-serif;
+}
+
+html{
+  scroll-behavior:smooth;
 }
 
 body{
-  background:
-    radial-gradient(circle at top,#35245c 0%,#171326 45%,#090811 100%);
-  color:#fff;
+
   min-height:100vh;
-  padding:15px;
+
+  overflow-x:hidden;
+
+  color:#fff;
+
+  font-family:
+    "Noto Sans Bengali",
+    "Hind Siliguri",
+    Arial,
+    sans-serif;
+
+  background:
+
+    linear-gradient(
+      180deg,
+      rgba(8,24,17,.18),
+      rgba(5,15,10,.90)
+    ),
+
+    url("https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1800&q=90");
+
+  background-size:cover;
+
+  background-position:center;
+
+  background-attachment:fixed;
+
 }
+
+
+/* ==================================================
+   FOG
+================================================== */
+
+.fog{
+
+  position:fixed;
+
+  left:-20%;
+
+  width:140%;
+
+  height:180px;
+
+  border-radius:50%;
+
+  background:
+    rgba(255,255,255,.11);
+
+  filter:blur(35px);
+
+  pointer-events:none;
+
+  z-index:1;
+
+  opacity:.55;
+
+}
+
+
+.fog.one{
+
+  top:22%;
+
+  animation:
+    fogMoveOne 18s ease-in-out infinite alternate;
+
+}
+
+
+.fog.two{
+
+  top:48%;
+
+  opacity:.35;
+
+  animation:
+    fogMoveTwo 24s ease-in-out infinite alternate;
+
+}
+
+
+.fog.three{
+
+  top:72%;
+
+  opacity:.22;
+
+  animation:
+    fogMoveThree 30s ease-in-out infinite alternate;
+
+}
+
+
+@keyframes fogMoveOne{
+
+  from{
+    transform:translateX(-8%);
+  }
+
+  to{
+    transform:translateX(10%);
+  }
+
+}
+
+
+@keyframes fogMoveTwo{
+
+  from{
+    transform:translateX(12%);
+  }
+
+  to{
+    transform:translateX(-10%);
+  }
+
+}
+
+
+@keyframes fogMoveThree{
+
+  from{
+    transform:translateX(-5%);
+  }
+
+  to{
+    transform:translateX(8%);
+  }
+
+}
+
+
+/* ==================================================
+   FLOATING LEAVES
+================================================== */
+
+.leaves{
+
+  position:fixed;
+
+  inset:0;
+
+  pointer-events:none;
+
+  overflow:hidden;
+
+  z-index:3;
+
+}
+
+
+.leaf{
+
+  position:absolute;
+
+  font-size:18px;
+
+  opacity:.65;
+
+  animation:
+    leafFall linear infinite;
+
+}
+
+
+.leaf:nth-child(1){
+
+  left:8%;
+
+  animation-duration:13s;
+
+  animation-delay:0s;
+
+}
+
+
+.leaf:nth-child(2){
+
+  left:27%;
+
+  animation-duration:17s;
+
+  animation-delay:4s;
+
+}
+
+
+.leaf:nth-child(3){
+
+  left:52%;
+
+  animation-duration:15s;
+
+  animation-delay:7s;
+
+}
+
+
+.leaf:nth-child(4){
+
+  left:76%;
+
+  animation-duration:19s;
+
+  animation-delay:2s;
+
+}
+
+
+.leaf:nth-child(5){
+
+  left:91%;
+
+  animation-duration:14s;
+
+  animation-delay:8s;
+
+}
+
+
+@keyframes leafFall{
+
+  0%{
+
+    top:-10%;
+
+    transform:
+      translateX(0)
+      rotate(0deg);
+
+    opacity:0;
+
+  }
+
+  10%{
+
+    opacity:.7;
+
+  }
+
+  50%{
+
+    transform:
+      translateX(55px)
+      rotate(180deg);
+
+  }
+
+  100%{
+
+    top:110%;
+
+    transform:
+      translateX(-45px)
+      rotate(360deg);
+
+    opacity:0;
+
+  }
+
+}
+
+
+/* ==================================================
+   APP
+================================================== */
 
 .app{
-  max-width:500px;
+
+  position:relative;
+
+  z-index:5;
+
+  width:100%;
+
+  max-width:540px;
+
   margin:auto;
+
+  padding:14px;
+
 }
 
-/* HEADER */
-.header{
-  text-align:center;
-  padding:18px 10px 12px;
-}
 
-.header .icon{
-  font-size:42px;
-}
+/* ==================================================
+   TOP BAR
+================================================== */
 
-.header h1{
-  font-size:27px;
-  margin-top:5px;
-}
+.topbar{
 
-.header p{
-  color:#c9bfdc;
-  margin-top:5px;
-}
-
-/* TODAY CARD */
-.today{
-  background:rgba(255,255,255,.09);
-  border:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(15px);
-  border-radius:24px;
-  padding:20px;
-  text-align:center;
-  box-shadow:0 15px 40px rgba(0,0,0,.25);
-}
-
-.today .english{
-  font-size:18px;
-  color:#ddd;
-}
-
-.today .bangla{
-  font-size:29px;
-  font-weight:bold;
-  margin:8px 0;
-}
-
-.today .hijri{
-  color:#d8bfff;
-  font-size:15px;
-}
-
-/* MONTH CONTROL */
-.month-control{
   display:flex;
-  align-items:center;
+
   justify-content:space-between;
-  margin:18px 0 12px;
+
+  align-items:center;
+
+  padding:
+    8px
+    3px
+    16px;
+
+  animation:
+    fadeDown .8s ease both;
+
 }
 
-.month-title{
-  text-align:center;
-  flex:1;
+
+@keyframes fadeDown{
+
+  from{
+
+    opacity:0;
+
+    transform:
+      translateY(-20px);
+
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:
+      translateY(0);
+
+  }
+
 }
 
-.month-title h2{
+
+.brand{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+}
+
+
+.logo{
+
+  width:49px;
+
+  height:49px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  border-radius:17px;
+
+  font-size:26px;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.20),
+      rgba(255,255,255,.05)
+    );
+
+  border:
+    1px solid
+    rgba(255,255,255,.16);
+
+  backdrop-filter:blur(15px);
+
+  box-shadow:
+    0 8px 30px
+    rgba(0,0,0,.25);
+
+  animation:
+    logoFloat 4s ease-in-out infinite;
+
+}
+
+
+@keyframes logoFloat{
+
+  0%,100%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-5px);
+  }
+
+}
+
+
+.brand h1{
+
+  font-size:19px;
+
+}
+
+
+.brand small{
+
+  color:#bfd0c5;
+
+  font-size:11px;
+
+}
+
+
+.profile{
+
+  text-align:right;
+
+}
+
+
+.profile span{
+
+  display:block;
+
+  color:#b9c9bf;
+
+  font-size:10px;
+
+}
+
+
+.profile strong{
+
+  font-size:15px;
+
+}
+
+
+/* ==================================================
+   SOUND BUTTON
+================================================== */
+
+.sound-btn{
+
+  position:fixed;
+
+  right:16px;
+
+  bottom:18px;
+
+  z-index:20;
+
+  width:52px;
+
+  height:52px;
+
+  border:none;
+
+  border-radius:50%;
+
+  color:#fff;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #2e8e61,
+      #173f2e
+    );
+
+  box-shadow:
+
+    0 8px 25px
+    rgba(0,0,0,.35);
+
   font-size:22px;
+
+  cursor:pointer;
+
+  transition:.25s;
+
 }
 
-.month-title span{
-  color:#aaa0bd;
-  font-size:14px;
+
+.sound-btn:active{
+
+  transform:scale(.88);
+
 }
+
+
+/* ==================================================
+   HERO
+================================================== */
+
+.hero{
+
+  position:relative;
+
+  overflow:hidden;
+
+  padding:28px 21px;
+
+  border-radius:31px;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      rgba(24,69,49,.75),
+      rgba(7,27,18,.72)
+    );
+
+  border:
+    1px solid
+    rgba(255,255,255,.14);
+
+  backdrop-filter:blur(18px);
+
+  box-shadow:
+    0 25px 70px
+    rgba(0,0,0,.38);
+
+  animation:
+    heroAppear 1s ease both;
+
+}
+
+
+@keyframes heroAppear{
+
+  from{
+
+    opacity:0;
+
+    transform:
+      scale(.96)
+      translateY(15px);
+
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:
+      scale(1)
+      translateY(0);
+
+  }
+
+}
+
+
+.hero::after{
+
+  content:"";
+
+  position:absolute;
+
+  inset:-50%;
+
+  background:
+
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.08),
+      transparent 38%
+    );
+
+  animation:
+    shine 8s linear infinite;
+
+}
+
+
+@keyframes shine{
+
+  from{
+    transform:translate(-10%,-10%);
+  }
+
+  to{
+    transform:translate(20%,20%);
+  }
+
+}
+
+
+.morning{
+
+  position:relative;
+
+  z-index:2;
+
+  color:#d8e8de;
+
+  font-size:13px;
+
+}
+
+
+.hero h2{
+
+  position:relative;
+
+  z-index:2;
+
+  margin-top:7px;
+
+  font-size:30px;
+
+  line-height:1.35;
+
+}
+
+
+.hero p{
+
+  position:relative;
+
+  z-index:2;
+
+  margin-top:8px;
+
+  max-width:370px;
+
+  color:#bfd0c6;
+
+  font-size:13px;
+
+  line-height:1.8;
+
+}
+
+
+.sun{
+
+  position:absolute;
+
+  right:22px;
+
+  bottom:20px;
+
+  font-size:52px;
+
+  z-index:2;
+
+  animation:
+    sunFloat 5s ease-in-out infinite;
+
+  filter:
+    drop-shadow(
+      0 0 22px
+      rgba(255,215,120,.45)
+    );
+
+}
+
+
+@keyframes sunFloat{
+
+  0%,100%{
+
+    transform:
+      translateY(0)
+      rotate(0deg);
+
+  }
+
+  50%{
+
+    transform:
+      translateY(-8px)
+      rotate(8deg);
+
+  }
+
+}
+
+
+/* ==================================================
+   TODAY
+================================================== */
+
+.today{
+
+  margin-top:16px;
+
+  padding:21px;
+
+  text-align:center;
+
+  border-radius:27px;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.15),
+      rgba(255,255,255,.045)
+    );
+
+  border:
+    1px solid
+    rgba(255,255,255,.15);
+
+  backdrop-filter:blur(20px);
+
+  box-shadow:
+    0 20px 50px
+    rgba(0,0,0,.27);
+
+  animation:
+    cardUp .8s ease .2s both;
+
+}
+
+
+@keyframes cardUp{
+
+  from{
+
+    opacity:0;
+
+    transform:
+      translateY(25px);
+
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:
+      translateY(0);
+
+  }
+
+}
+
+
+.today-label{
+
+  color:#c5d5cb;
+
+  font-size:12px;
+
+}
+
+
+.today-english{
+
+  margin-top:7px;
+
+  color:#e8f2ec;
+
+  font-size:17px;
+
+}
+
+
+.today-bangla{
+
+  margin-top:6px;
+
+  font-size:29px;
+
+  font-weight:800;
+
+  text-shadow:
+    0 3px 18px
+    rgba(255,255,255,.13);
+
+}
+
+
+.today-hijri{
+
+  margin-top:5px;
+
+  color:#bdd0c4;
+
+  font-size:13px;
+
+}
+
+
+/* ==================================================
+   QUICK
+================================================== */
+
+.quick{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:9px;
+
+  margin-top:12px;
+
+}
+
+
+.quick-card{
+
+  padding:13px 6px;
+
+  text-align:center;
+
+  border-radius:18px;
+
+  background:
+    rgba(255,255,255,.075);
+
+  border:
+    1px solid
+    rgba(255,255,255,.09);
+
+  backdrop-filter:blur(13px);
+
+  transition:.25s;
+
+}
+
+
+.quick-card:hover{
+
+  transform:
+    translateY(-4px);
+
+}
+
+
+.quick-card b{
+
+  display:block;
+
+  font-size:16px;
+
+}
+
+
+.quick-card small{
+
+  color:#aebeb5;
+
+  font-size:9px;
+
+}
+
+
+/* ==================================================
+   MONTH
+================================================== */
+
+.month-control{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:9px;
+
+  margin-top:18px;
+
+}
+
 
 .nav-btn{
-  width:44px;
-  height:44px;
-  border:0;
-  border-radius:14px;
-  background:rgba(255,255,255,.1);
-  color:white;
-  font-size:22px;
+
+  width:46px;
+
+  height:46px;
+
+  border:none;
+
+  border-radius:15px;
+
+  color:#fff;
+
+  background:
+    rgba(255,255,255,.10);
+
+  border:
+    1px solid
+    rgba(255,255,255,.12);
+
+  font-size:25px;
+
   cursor:pointer;
+
+  transition:.2s;
+
 }
+
 
 .nav-btn:active{
-  transform:scale(.94);
+
+  transform:scale(.88);
+
 }
 
-/* CALENDAR */
-.calendar{
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:24px;
-  padding:13px;
-  backdrop-filter:blur(15px);
+
+.month-title{
+
+  flex:1;
+
+  text-align:center;
+
 }
+
+
+.month-title h2{
+
+  font-size:21px;
+
+}
+
+
+.month-title span{
+
+  color:#aebfb5;
+
+  font-size:10px;
+
+}
+
+
+/* ==================================================
+   CALENDAR
+================================================== */
+
+.calendar{
+
+  margin-top:12px;
+
+  padding:13px;
+
+  border-radius:27px;
+
+  background:
+    rgba(5,21,14,.73);
+
+  border:
+    1px solid
+    rgba(255,255,255,.12);
+
+  backdrop-filter:blur(18px);
+
+  box-shadow:
+    0 20px 55px
+    rgba(0,0,0,.28);
+
+}
+
 
 .weekdays,
 .days{
+
   display:grid;
-  grid-template-columns:repeat(7,1fr);
+
+  grid-template-columns:
+    repeat(7,1fr);
+
   gap:5px;
+
 }
+
 
 .weekdays div{
+
+  padding:8px 1px;
+
   text-align:center;
-  color:#bfb4d0;
-  font-size:13px;
-  padding:8px 0;
+
+  color:#9eafa5;
+
+  font-size:10px;
+
 }
+
 
 .day{
-  min-height:52px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:15px;
-  cursor:pointer;
-  background:rgba(255,255,255,.045);
-  font-size:16px;
+
   position:relative;
+
+  min-height:56px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:center;
+
+  align-items:center;
+
+  border-radius:15px;
+
+  background:
+    rgba(255,255,255,.043);
+
+  border:
+    1px solid
+    rgba(255,255,255,.025);
+
+  cursor:pointer;
+
+  transition:
+
+    transform .2s,
+    background .2s;
+
 }
+
+
+.day:active{
+
+  transform:scale(.90);
+
+}
+
 
 .day:hover{
-  background:rgba(255,255,255,.12);
+
+  background:
+    rgba(255,255,255,.10);
+
 }
+
+
+.day-number{
+
+  font-size:15px;
+
+  font-weight:700;
+
+}
+
+
+.day-bn{
+
+  margin-top:2px;
+
+  color:#81968a;
+
+  font-size:8px;
+
+}
+
 
 .day.today-day{
-  background:linear-gradient(135deg,#ff4f91,#814cff);
-  font-weight:bold;
-  box-shadow:0 6px 18px rgba(255,79,145,.3);
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #318f63,
+      #164832
+    );
+
+  border-color:
+    rgba(190,255,218,.30);
+
+  box-shadow:
+
+    0 0 0 1px
+    rgba(255,255,255,.05),
+
+    0 8px 25px
+    rgba(22,127,78,.30);
+
+  animation:
+    todayPulse 3s ease-in-out infinite;
+
 }
 
-.day.empty{
-  background:transparent;
-  cursor:default;
+
+@keyframes todayPulse{
+
+  0%,100%{
+
+    box-shadow:
+      0 8px 25px
+      rgba(22,127,78,.28);
+
+  }
+
+  50%{
+
+    box-shadow:
+      0 8px 35px
+      rgba(51,174,111,.48);
+
+  }
+
 }
 
-/* INFO */
-.info{
-  margin-top:18px;
-  background:rgba(255,255,255,.07);
-  border-radius:22px;
-  padding:18px;
+
+.day.holiday{
+
+  background:
+
+    linear-gradient(
+      135deg,
+      rgba(164,61,68,.82),
+      rgba(83,28,37,.82)
+    );
+
+  border-color:
+    rgba(255,160,165,.22);
+
 }
 
-.info h3{
-  font-size:18px;
-  margin-bottom:12px;
+
+.day.holiday::after{
+
+  content:"";
+
+  position:absolute;
+
+  top:5px;
+
+  right:6px;
+
+  width:5px;
+
+  height:5px;
+
+  border-radius:50%;
+
+  background:#ffabab;
+
+  box-shadow:
+    0 0 8px
+    rgba(255,130,130,.8);
+
 }
 
-.info-item{
+
+.day.today-day.holiday{
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #bb703a,
+      #74362e
+    );
+
+}
+
+
+/* ==================================================
+   LEGEND
+================================================== */
+
+.legend{
+
   display:flex;
-  align-items:center;
+
+  flex-wrap:wrap;
+
   gap:12px;
-  padding:11px 0;
-  border-bottom:1px solid rgba(255,255,255,.08);
+
+  margin-top:12px;
+
+  color:#abbcb2;
+
+  font-size:10px;
+
 }
 
-.info-item:last-child{
-  border-bottom:0;
+
+.legend span{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:5px;
+
 }
+
+
+.legend-dot{
+
+  width:8px;
+
+  height:8px;
+
+  border-radius:50%;
+
+}
+
+
+.green{
+  background:#38a970;
+}
+
+
+.red{
+  background:#d66d75;
+}
+
+
+/* ==================================================
+   CARD
+================================================== */
+
+.card{
+
+  margin-top:15px;
+
+  padding:18px;
+
+  border-radius:24px;
+
+  background:
+    rgba(5,20,14,.73);
+
+  border:
+    1px solid
+    rgba(255,255,255,.11);
+
+  backdrop-filter:blur(18px);
+
+  animation:
+    cardUp .8s ease both;
+
+}
+
+
+.card-title{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  margin-bottom:12px;
+
+  font-size:17px;
+
+}
+
+
+.info-row{
+
+  display:flex;
+
+  gap:11px;
+
+  padding:11px 0;
+
+  border-bottom:
+    1px solid
+    rgba(255,255,255,.065);
+
+}
+
+
+.info-row:last-child{
+
+  border-bottom:none;
+
+}
+
 
 .info-icon{
-  width:40px;
-  height:40px;
-  border-radius:13px;
+
+  width:39px;
+
+  height:39px;
+
+  flex-shrink:0;
+
   display:flex;
-  align-items:center;
+
   justify-content:center;
-  background:rgba(255,255,255,.08);
-  font-size:20px;
+
+  align-items:center;
+
+  border-radius:13px;
+
+  background:
+    rgba(255,255,255,.07);
+
 }
 
-.info-text{
+
+.info-content{
+
   flex:1;
+
+  font-size:13px;
+
 }
 
-.info-text small{
+
+.info-content small{
+
   display:block;
-  color:#aaa0bd;
+
+  margin-top:4px;
+
+  color:#9fb1a6;
+
+  font-size:11px;
+
+}
+
+
+/* ==================================================
+   HOLIDAYS
+================================================== */
+
+.holiday-list{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:7px;
+
+  max-height:500px;
+
+  overflow-y:auto;
+
+}
+
+
+.holiday-item{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:9px;
+
+  padding:11px;
+
+  border-radius:14px;
+
+  background:
+    rgba(255,255,255,.055);
+
+  transition:.2s;
+
+}
+
+
+.holiday-item:hover{
+
+  transform:
+    translateX(3px);
+
+  background:
+    rgba(255,255,255,.09);
+
+}
+
+
+.holiday-date{
+
+  width:45px;
+
+  flex-shrink:0;
+
+  text-align:center;
+
+  color:#ffb1b1;
+
+  font-size:12px;
+
+  font-weight:bold;
+
+}
+
+
+.holiday-date small{
+
+  color:#8fa097;
+
+  font-size:8px;
+
+}
+
+
+.holiday-name{
+
+  flex:1;
+
+  font-size:12px;
+
+}
+
+
+.holiday-type{
+
   margin-top:3px;
+
+  color:#93a59a;
+
+  font-size:8px;
+
 }
 
-/* EVENT */
-.event-box{
-  margin-top:18px;
-  background:linear-gradient(
-    135deg,
-    rgba(255,79,145,.16),
-    rgba(129,76,255,.16)
-  );
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:22px;
-  padding:18px;
-}
 
-.event-box h3{
-  margin-bottom:10px;
-}
+/* ==================================================
+   EVENTS
+================================================== */
 
 .event-input{
+
   width:100%;
+
   padding:13px;
-  border:0;
+
+  border:none;
+
   outline:none;
-  border-radius:13px;
-  background:rgba(0,0,0,.25);
+
+  border-radius:14px;
+
   color:white;
-  margin-bottom:10px;
+
+  background:
+    rgba(0,0,0,.25);
+
+  margin-bottom:9px;
+
 }
+
 
 .event-input::placeholder{
-  color:#aaa;
+
+  color:#829188;
+
 }
+
 
 .add-btn{
+
   width:100%;
-  border:0;
+
   padding:13px;
-  border-radius:13px;
+
+  border:none;
+
+  border-radius:14px;
+
   color:white;
-  font-size:16px;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #2e8e61,
+      #17452f
+    );
+
+  font-size:14px;
+
   font-weight:bold;
-  background:linear-gradient(135deg,#ff4f91,#814cff);
+
   cursor:pointer;
+
+  transition:.2s;
+
 }
+
+
+.add-btn:active{
+
+  transform:scale(.97);
+
+}
+
 
 .events{
-  margin-top:12px;
+
+  margin-top:9px;
+
 }
+
 
 .event{
-  background:rgba(255,255,255,.07);
-  border-radius:13px;
-  padding:12px;
-  margin-top:8px;
+
   display:flex;
-  justify-content:space-between;
+
   align-items:center;
+
+  justify-content:space-between;
+
+  gap:10px;
+
+  margin-top:7px;
+
+  padding:11px;
+
+  border-radius:13px;
+
+  background:
+    rgba(255,255,255,.055);
+
+  font-size:12px;
+
 }
+
 
 .delete{
-  border:0;
+
+  border:none;
+
   background:none;
-  color:#ff719f;
-  font-size:18px;
+
+  color:#ff9999;
+
+  font-size:17px;
+
+  cursor:pointer;
+
 }
 
-/* FOOTER */
-.footer{
+
+/* ==================================================
+   RABBI
+================================================== */
+
+.rabbi-card{
+
+  position:relative;
+
+  overflow:hidden;
+
+  margin-top:16px;
+
+  padding:20px;
+
   text-align:center;
-  color:#80758f;
-  font-size:12px;
-  padding:25px 0 10px;
+
+  border-radius:23px;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      rgba(39,91,65,.48),
+      rgba(7,25,17,.72)
+    );
+
+  border:
+    1px solid
+    rgba(255,255,255,.11);
+
 }
+
+
+.rabbi-card::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:100px;
+
+  height:100px;
+
+  top:-45px;
+
+  right:-35px;
+
+  border-radius:50%;
+
+  background:
+    rgba(255,255,255,.07);
+
+  animation:
+    rabbiGlow 5s ease-in-out infinite alternate;
+
+}
+
+
+@keyframes rabbiGlow{
+
+  from{
+    transform:scale(.8);
+  }
+
+  to{
+    transform:scale(1.5);
+  }
+
+}
+
+
+.rabbi-card small{
+
+  color:#aabbb0;
+
+  font-size:10px;
+
+}
+
+
+.rabbi-card h3{
+
+  margin-top:5px;
+
+  font-size:22px;
+
+  letter-spacing:1px;
+
+}
+
+
+/* ==================================================
+   FOOTER
+================================================== */
+
+.footer{
+
+  padding:
+    24px
+    5px
+    15px;
+
+  text-align:center;
+
+  color:#87988e;
+
+  font-size:10px;
+
+  line-height:1.8;
+
+}
+
+
+.footer strong{
+
+  color:#d3dfd8;
+
+}
+
+
+/* ==================================================
+   TOAST
+================================================== */
+
+.toast{
+
+  position:fixed;
+
+  left:50%;
+
+  bottom:82px;
+
+  z-index:30;
+
+  transform:
+    translateX(-50%)
+    translateY(20px);
+
+  opacity:0;
+
+  pointer-events:none;
+
+  padding:
+    11px
+    16px;
+
+  border-radius:15px;
+
+  background:
+    rgba(8,20,14,.92);
+
+  border:
+    1px solid
+    rgba(255,255,255,.12);
+
+  backdrop-filter:blur(15px);
+
+  color:#fff;
+
+  font-size:11px;
+
+  transition:.3s;
+
+}
+
+
+.toast.show{
+
+  opacity:1;
+
+  transform:
+    translateX(-50%)
+    translateY(0);
+
+}
+
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media(max-width:370px){
+
+  .hero h2{
+
+    font-size:25px;
+
+  }
+
+  .day{
+
+    min-height:49px;
+
+  }
+
+  .day-number{
+
+    font-size:13px;
+
+  }
+
+  .today-bangla{
+
+    font-size:25px;
+
+  }
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
+
+<!-- ==================================================
+     FOG
+================================================== -->
+
+<div class="fog one"></div>
+
+<div class="fog two"></div>
+
+<div class="fog three"></div>
+
+
+<!-- ==================================================
+     FLOATING LEAVES
+================================================== -->
+
+<div class="leaves">
+
+  <div class="leaf">🍃</div>
+
+  <div class="leaf">🌿</div>
+
+  <div class="leaf">🍂</div>
+
+  <div class="leaf">🍃</div>
+
+  <div class="leaf">🌿</div>
+
+</div>
+
+
+<!-- ==================================================
+     SOUND BUTTON
+================================================== -->
+
+<button
+  class="sound-btn"
+  id="soundButton"
+  onclick="toggleSound()"
+>
+  🔇
+</button>
+
+
 <div class="app">
 
-  <div class="header">
-    <div class="icon">🇧🇩</div>
-    <h1>বাংলা ক্যালেন্ডার</h1>
-    <p>বাংলা • ইংরেজি • হিজরি</p>
-  </div>
 
-  <!-- TODAY -->
-  <div class="today">
+<!-- ==================================================
+     TOP BAR
+================================================== -->
 
-    <div class="english" id="todayEnglish">
-      আজকের তারিখ
+<header class="topbar">
+
+  <div class="brand">
+
+    <div class="logo">
+      🌾
     </div>
 
-    <div class="bangla" id="todayBangla">
-      বাংলা তারিখ
-    </div>
+    <div>
 
-    <div class="hijri" id="todayHijri">
-      হিজরি তারিখ
-    </div>
+      <h1>
+        বাংলা ক্যালেন্ডার
+      </h1>
 
-  </div>
+      <small>
+        গ্রামের ভোরের গল্প
+      </small>
 
-  <!-- MONTH -->
-  <div class="month-control">
-
-    <button class="nav-btn" onclick="previousMonth()">‹</button>
-
-    <div class="month-title">
-      <h2 id="monthName">অক্টোবর ২০২৬</h2>
-      <span id="yearName">ইংরেজি ক্যালেন্ডার</span>
-    </div>
-
-    <button class="nav-btn" onclick="nextMonth()">›</button>
-
-  </div>
-
-  <!-- CALENDAR -->
-  <div class="calendar">
-
-    <div class="weekdays">
-      <div>রবি</div>
-      <div>সোম</div>
-      <div>মঙ্গল</div>
-      <div>বুধ</div>
-      <div>বৃহস্পতি</div>
-      <div>শুক্র</div>
-      <div>শনি</div>
-    </div>
-
-    <div class="days" id="calendarDays"></div>
-
-  </div>
-
-  <!-- SELECTED DATE INFO -->
-  <div class="info">
-
-    <h3>📅 নির্বাচিত দিনের তথ্য</h3>
-
-    <div class="info-item">
-      <div class="info-icon">🇬🇧</div>
-      <div class="info-text">
-        ইংরেজি
-        <small id="selectedEnglish">আজকের তারিখ</small>
-      </div>
-    </div>
-
-    <div class="info-item">
-      <div class="info-icon">🇧🇩</div>
-      <div class="info-text">
-        বাংলা
-        <small id="selectedBangla">বাংলা তারিখ</small>
-      </div>
-    </div>
-
-    <div class="info-item">
-      <div class="info-icon">🌙</div>
-      <div class="info-text">
-        হিজরি
-        <small id="selectedHijri">হিজরি তারিখ</small>
-      </div>
     </div>
 
   </div>
 
-  <!-- EVENT -->
-  <div class="event-box">
 
-    <h3>📝 গুরুত্বপূর্ণ তারিখ</h3>
+  <div class="profile">
 
-    <input
-      id="eventInput"
-      class="event-input"
-      type="text"
-      placeholder="যেমন: জন্মদিন, বিবাহবার্ষিকী..."
-    >
+    <span>
+      পরিচালনায়
+    </span>
 
-    <button class="add-btn" onclick="addEvent()">
-      + তারিখ যোগ করুন
-    </button>
-
-    <div class="events" id="events"></div>
+    <strong>
+      Rabbi
+    </strong>
 
   </div>
 
-  <div class="footer">
-    🇧🇩 বাংলা ক্যালেন্ডার • আপনার নিজের ডিজিটাল ক্যালেন্ডার
+</header>
+
+
+<!-- ==================================================
+     HERO
+================================================== -->
+
+<section class="hero">
+
+  <div class="morning">
+    🌫️ কুয়াশা মাখা ভোর
   </div>
 
+
+  <h2>
+    নতুন সকাল,<br>
+    নতুন দিনের শুরু 🌱
+  </h2>
+
+
+  <p>
+    শিশির ভেজা ঘাস, দূরের ধানক্ষেত
+    আর পাখির ডাকে শুরু হোক
+    তোমার আজকের দিন।
+  </p>
+
+
+  <div class="sun">
+    🌤️
+  </div>
+
+</section>
+
+
+<!-- ==================================================
+     TODAY
+================================================== -->
+
+<section class="today">
+
+  <div class="today-label">
+    আজকের তারিখ
+  </div>
+
+
+  <div
+    class="today-english"
+    id="todayEnglish"
+  >
+    —
+  </div>
+
+
+  <div
+    class="today-bangla"
+    id="todayBangla"
+  >
+    —
+  </div>
+
+
+  <div
+    class="today-hijri"
+    id="todayHijri"
+  >
+    —
+  </div>
+
+</section>
+
+
+<!-- ==================================================
+     QUICK
+================================================== -->
+
+<section class="quick">
+
+  <div class="quick-card">
+
+    <b id="dayName">
+      —
+    </b>
+
+    <small>
+      বার
+    </small>
+
+  </div>
+
+
+  <div class="quick-card">
+
+    <b id="dayNumber">
+      —
+    </b>
+
+    <small>
+      আজ
+    </small>
+
+  </div>
+
+
+  <div class="quick-card">
+
+    <b id="holidayCount">
+      —
+    </b>
+
+    <small>
+      ছুটি
+    </small>
+
+  </div>
+
+</section>
+
+
+<!-- ==================================================
+     MONTH
+================================================== -->
+
+<div class="month-control">
+
+  <button
+    class="nav-btn"
+    onclick="previousMonth()"
+  >
+    ‹
+  </button>
+
+
+  <div class="month-title">
+
+    <h2 id="monthName">
+      —
+    </h2>
+
+    <span>
+      বাংলা ক্যালেন্ডার
+    </span>
+
+  </div>
+
+
+  <button
+    class="nav-btn"
+    onclick="nextMonth()"
+  >
+    ›
+  </button>
+
+</div>
+
+
+<!-- ==================================================
+     CALENDAR
+================================================== -->
+
+<section class="calendar">
+
+  <div class="weekdays">
+
+    <div>রবি</div>
+
+    <div>সোম</div>
+
+    <div>মঙ্গল</div>
+
+    <div>বুধ</div>
+
+    <div>বৃহঃ</div>
+
+    <div>শুক্র</div>
+
+    <div>শনি</div>
+
+  </div>
+
+
+  <div
+    class="days"
+    id="calendarDays"
+  ></div>
+
+
+  <div class="legend">
+
+    <span>
+
+      <i class="legend-dot green"></i>
+
+      আজ
+
+    </span>
+
+
+    <span>
+
+      <i class="legend-dot red"></i>
+
+      ছুটির দিন
+
+    </span>
+
+  </div>
+
+</section>
+
+
+<!-- ==================================================
+     SELECTED DATE
+================================================== -->
+
+<section class="card">
+
+  <div class="card-title">
+    📅 নির্বাচিত দিনের তথ্য
+  </div>
+
+
+  <div class="info-row">
+
+    <div class="info-icon">
+      🇬🇧
+    </div>
+
+    <div class="info-content">
+
+      ইংরেজি
+
+      <small id="selectedEnglish">
+        —
+      </small>
+
+    </div>
+
+  </div>
+
+
+  <div class="info-row">
+
+    <div class="info-icon">
+      🇧🇩
+    </div>
+
+    <div class="info-content">
+
+      বাংলা
+
+      <small id="selectedBangla">
+        —
+      </small>
+
+    </div>
+
+  </div>
+
+
+  <div class="info-row">
+
+    <div class="info-icon">
+      🌙
+    </div>
+
+    <div class="info-content">
+
+      হিজরি
+
+      <small id="selectedHijri">
+        —
+      </small>
+
+    </div>
+
+  </div>
+
+
+  <div
+    class="info-row"
+    id="selectedHolidayRow"
+    style="display:none;"
+  >
+
+    <div class="info-icon">
+      🎉
+    </div>
+
+    <div class="info-content">
+
+      ছুটি
+
+      <small id="selectedHoliday">
+        —
+      </small>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ==================================================
+     HOLIDAYS
+================================================== -->
+
+<section class="card">
+
+  <div class="card-title">
+    🎉 ২০২৬ সালের ছুটির দিন
+  </div>
+
+
+  <div
+    class="holiday-list"
+    id="holidayList"
+  ></div>
+
+</section>
+
+
+<!-- ==================================================
+     PERSONAL EVENTS
+================================================== -->
+
+<section class="card">
+
+  <div class="card-title">
+    📝 আমার গুরুত্বপূর্ণ দিন
+  </div>
+
+
+  <input
+    id="eventInput"
+    class="event-input"
+    type="text"
+    placeholder="জন্মদিন / বিবাহবার্ষিকী / অন্য কিছু"
+  >
+
+
+  <button
+    class="add-btn"
+    onclick="addEvent()"
+  >
+    + গুরুত্বপূর্ণ দিন যোগ করুন
+  </button>
+
+
+  <div
+    class="events"
+    id="events"
+  ></div>
+
+</section>
+
+
+<!-- ==================================================
+     RABBI
+================================================== -->
+
+<section class="rabbi-card">
+
+  <small>
+    এই ক্যালেন্ডারটি তৈরি করেছেন
+  </small>
+
+
+  <h3>
+    ✨ Rabbi ✨
+  </h3>
+
+</section>
+
+
+<!-- ==================================================
+     FOOTER
+================================================== -->
+
+<footer class="footer">
+
+  <strong>
+    বাংলা ক্যালেন্ডার
+  </strong>
+
+  <br>
+
+  কুয়াশা মাখা গ্রামের ভোরের আবহে
+  তৈরি একটি ছোট্ট ডিজিটাল ক্যালেন্ডার 🇧🇩
+
+</footer>
+
+
+</div>
+
+
+<!-- ==================================================
+     TOAST
+================================================== -->
+
+<div
+  class="toast"
+  id="toast"
+>
+  —
 </div>
 
 
 <script>
 
-/* =========================================
-   DATE
-========================================= */
-
-let currentDate = new Date();
-
-
-/* =========================================
-   BANGLA MONTH
-========================================= */
-
-const banglaMonths = [
-  "বৈশাখ",
-  "জ্যৈষ্ঠ",
-  "আষাঢ়",
-  "শ্রাবণ",
-  "ভাদ্র",
-  "আশ্বিন",
-  "কার্তিক",
-  "অগ্রহায়ণ",
-  "পৌষ",
-  "মাঘ",
-  "ফাল্গুন",
-  "চৈত্র"
-];
-
-
-/* =========================================
-   ENGLISH MONTH
-========================================= */
+/* ==================================================
+   MONTHS
+================================================== */
 
 const englishMonths = [
+
   "জানুয়ারি",
   "ফেব্রুয়ারি",
   "মার্চ",
@@ -445,124 +2309,366 @@ const englishMonths = [
   "অক্টোবর",
   "নভেম্বর",
   "ডিসেম্বর"
+
 ];
 
 
-/* =========================================
-   BANGLA NUMBERS
-========================================= */
+const banglaMonths = [
 
-function banglaNumber(number){
+  "বৈশাখ",
+  "জ্যৈষ্ঠ",
+  "আষাঢ়",
+  "শ্রাবণ",
+  "ভাদ্র",
+  "আশ্বিন",
+  "কার্তিক",
+  "অগ্রহায়ণ",
+  "পৌষ",
+  "মাঘ",
+  "ফাল্গুন",
+  "চৈত্র"
 
-  const bn = [
+];
+
+
+const weekdays = [
+
+  "রবিবার",
+  "সোমবার",
+  "মঙ্গলবার",
+  "বুধবার",
+  "বৃহস্পতিবার",
+  "শুক্রবার",
+  "শনিবার"
+
+];
+
+
+/* ==================================================
+   BANGLA NUMBER
+================================================== */
+
+function bn(number){
+
+  const digits = [
+
     "০","১","২","৩","৪",
     "৫","৬","৭","৮","৯"
+
   ];
 
+
   return String(number)
+
     .split("")
-    .map(x => bn[x] ?? x)
+
+    .map(
+      x => digits[x] ?? x
+    )
+
     .join("");
+
 }
 
 
-/* =========================================
+/* ==================================================
+   DATE KEY
+================================================== */
+
+function dateKey(
+  year,
+  month,
+  day
+){
+
+  return (
+
+    year +
+    "-" +
+    String(month + 1).padStart(2,"0") +
+    "-" +
+    String(day).padStart(2,"0")
+
+  );
+
+}
+
+
+/* ==================================================
+   HOLIDAYS
+================================================== */
+
+const holidays = {
+
+  "2026-02-04":{
+    name:"শবে বরাত",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-02-21":{
+    name:"শহীদ দিবস ও আন্তর্জাতিক মাতৃভাষা দিবস",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-03-17":{
+    name:"শবে কদর",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-03-18":{
+    name:"ঈদুল ফিতর উপলক্ষে অতিরিক্ত ছুটি",
+    type:"সরকারি"
+  },
+
+  "2026-03-19":{
+    name:"ঈদুল ফিতর",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-03-20":{
+    name:"ঈদুল ফিতর",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-03-21":{
+    name:"ঈদুল ফিতর",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-03-22":{
+    name:"ঈদুল ফিতর",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-03-23":{
+    name:"ঈদুল ফিতর",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-03-26":{
+    name:"স্বাধীনতা ও জাতীয় দিবস",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-04-14":{
+    name:"বাংলা নববর্ষ",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-05-01":{
+    name:"মে দিবস ও বুদ্ধ পূর্ণিমা",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-05-26":{
+    name:"ঈদুল আজহা",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-05-27":{
+    name:"ঈদুল আজহা",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-05-28":{
+    name:"ঈদুল আজহা",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-05-29":{
+    name:"ঈদুল আজহা",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-05-30":{
+    name:"ঈদুল আজহা",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-05-31":{
+    name:"ঈদুল আজহা",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-06-26":{
+    name:"আশুরা",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-07-01":{
+    name:"ব্যাংক হলিডে",
+    type:"ব্যাংক"
+  },
+
+  "2026-08-05":{
+    name:"জুলাই গণঅভ্যুত্থান দিবস",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-08-26":{
+    name:"ঈদে মিলাদুন্নবী (সা.)",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-09-04":{
+    name:"জন্মাষ্টমী",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-10-20":{
+    name:"দুর্গাপূজা — নবমী",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-10-21":{
+    name:"দুর্গাপূজা — বিজয়া দশমী",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-12-16":{
+    name:"বিজয় দিবস",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-12-25":{
+    name:"বড়দিন",
+    type:"সরকারি / ব্যাংক"
+  },
+
+  "2026-12-31":{
+    name:"ব্যাংক হলিডে",
+    type:"ব্যাংক"
+  }
+
+};
+
+
+/* ==================================================
    BANGLA DATE
-   Approximate Bangladesh calendar conversion
-========================================= */
+================================================== */
 
 function getBanglaDate(date){
 
-  let year = date.getFullYear();
-  let month = date.getMonth();
-  let day = date.getDate();
+  const year =
+    date.getFullYear();
 
-  /*
-    Approximate starting dates for Bangla months.
-    This keeps the app functional without an external API.
-  */
+  const month =
+    date.getMonth();
+
+  const day =
+    date.getDate();
+
 
   const starts = [
-    [4,14], // Boishakh
-    [5,15],
-    [6,15],
-    [7,16],
-    [8,16],
-    [9,16],
-    [10,16],
-    [11,16],
+
     [0,15],
     [1,14],
     [2,15],
-    [3,14]
+    [3,14],
+    [4,15],
+    [5,15],
+    [6,16],
+    [7,16],
+    [8,16],
+    [9,15],
+    [10,14],
+    [11,15]
+
   ];
 
-  let bMonth = month;
-  let bDay = day;
 
-  let start = starts[month];
+  let bMonth =
+    month;
+
+
+  let bDay =
+    day;
+
 
   if(
-    month === start[0] &&
-    day >= start[1]
+    day <
+    starts[month][1]
   ){
 
-    bMonth = month;
-    bDay = day - start[1] + 1;
-
-  }else{
-
-    bMonth = month - 1;
+    bMonth--;
 
     if(bMonth < 0){
+
       bMonth = 11;
-      year--;
+
     }
 
-    let previousStart = starts[bMonth][1];
+  }
 
-    let daysInPreviousMonth =
+
+  const startDay =
+    starts[bMonth][1];
+
+
+  if(
+    bMonth === month
+  ){
+
+    bDay =
+      day -
+      startDay +
+      1;
+
+  }
+
+  else{
+
+    const previousDays =
       new Date(
-        date.getFullYear(),
+        year,
         month,
         0
       ).getDate();
 
+
     bDay =
-      daysInPreviousMonth -
-      previousStart +
+      previousDays -
+      startDay +
       day +
       1;
+
   }
 
-  let banglaYear =
+
+  let bYear =
     year - 593;
 
-  if(month < 3){
-    banglaYear--;
+
+  if(
+    month < 3
+  ){
+
+    bYear--;
+
   }
 
+
   return {
+
     day:bDay,
+
     month:bMonth,
-    year:banglaYear
+
+    year:bYear
+
   };
 
 }
 
 
-/* =========================================
-   HIJRI DATE
-========================================= */
+/* ==================================================
+   HIJRI
+================================================== */
 
 function getHijriDate(date){
 
-  /*
-    Simple approximate Hijri conversion.
-    Full astronomical conversion can be added later.
-  */
+  const months = [
 
-  const hijriMonths = [
     "মহররম",
     "সফর",
     "রবিউল আউয়াল",
@@ -575,125 +2681,184 @@ function getHijriDate(date){
     "শাওয়াল",
     "জিলকদ",
     "জিলহজ"
+
   ];
 
+
   const base =
-    new Date(2026,5,18);
+    new Date(
+      2025,
+      5,
+      26
+    );
+
 
   const diff =
     Math.floor(
-      (date-base)/(1000*60*60*24)
+      (date - base) /
+      86400000
     );
 
-  const hijriDay =
-    ((diff % 30)+30)%30 + 1;
 
-  const hijriMonth =
+  const total =
+    ((diff % 354) + 354) % 354;
+
+
+  const month =
     Math.floor(
-      (((diff % 354)+354)%354)/29.5
+      total / 29.5
     ) % 12;
 
-  const hijriYear =
+
+  const day =
+    Math.floor(
+      total % 29.5
+    ) + 1;
+
+
+  const year =
     1447 +
-    Math.floor(diff/354);
+    Math.floor(
+      diff / 354
+    );
+
 
   return {
-    day:hijriDay,
-    month:hijriMonths[hijriMonth],
-    year:hijriYear
+
+    day,
+    month:months[month],
+    year
+
   };
 
 }
 
 
-/* =========================================
-   FORMAT DATE
-========================================= */
+/* ==================================================
+   ENGLISH DATE
+================================================== */
 
 function formatEnglish(date){
 
-  const months = [
-    "জানুয়ারি",
-    "ফেব্রুয়ারি",
-    "মার্চ",
-    "এপ্রিল",
-    "মে",
-    "জুন",
-    "জুলাই",
-    "আগস্ট",
-    "সেপ্টেম্বর",
-    "অক্টোবর",
-    "নভেম্বর",
-    "ডিসেম্বর"
-  ];
-
   return (
-    banglaNumber(date.getDate()) +
+
+    bn(
+      date.getDate()
+    ) +
+
     " " +
-    months[date.getMonth()] +
+
+    englishMonths[
+      date.getMonth()
+    ] +
+
     " " +
-    banglaNumber(date.getFullYear())
+
+    bn(
+      date.getFullYear()
+    )
+
   );
+
 }
 
 
-/* =========================================
-   UPDATE TODAY
-========================================= */
+/* ==================================================
+   TODAY
+================================================== */
 
 function updateToday(){
 
-  const today = new Date();
+  const today =
+    new Date();
 
-  const bd =
+
+  const bangla =
     getBanglaDate(today);
+
 
   const hijri =
     getHijriDate(today);
+
 
   document.getElementById(
     "todayEnglish"
   ).innerText =
     formatEnglish(today);
 
+
   document.getElementById(
     "todayBangla"
   ).innerText =
-    banglaNumber(bd.day) +
+
+    bn(bangla.day) +
     " " +
-    banglaMonths[bd.month] +
+    banglaMonths[
+      bangla.month
+    ] +
     " " +
-    banglaNumber(bd.year);
+    bn(bangla.year);
+
 
   document.getElementById(
     "todayHijri"
   ).innerText =
-    banglaNumber(hijri.day) +
+
+    bn(hijri.day) +
     " " +
     hijri.month +
     " " +
-    banglaNumber(hijri.year);
+    bn(hijri.year);
+
+
+  document.getElementById(
+    "dayName"
+  ).innerText =
+    weekdays[
+      today.getDay()
+    ];
+
+
+  document.getElementById(
+    "dayNumber"
+  ).innerText =
+    bn(
+      today.getDate()
+    );
+
 }
 
 
-/* =========================================
-   CALENDAR
-========================================= */
+/* ==================================================
+   CURRENT MONTH
+================================================== */
+
+let currentDate =
+  new Date();
+
+
+/* ==================================================
+   RENDER CALENDAR
+================================================== */
 
 function renderCalendar(){
 
   const year =
     currentDate.getFullYear();
 
+
   const month =
     currentDate.getMonth();
+
 
   document.getElementById(
     "monthName"
   ).innerText =
+
     englishMonths[month] +
     " " +
-    banglaNumber(year);
+    bn(year);
+
 
   const firstDay =
     new Date(
@@ -702,6 +2867,7 @@ function renderCalendar(){
       1
     ).getDay();
 
+
   const totalDays =
     new Date(
       year,
@@ -709,57 +2875,95 @@ function renderCalendar(){
       0
     ).getDate();
 
+
   const container =
     document.getElementById(
       "calendarDays"
     );
 
+
   container.innerHTML = "";
 
 
-  /* EMPTY DAYS */
-
   for(
-    let i=0;
-    i<firstDay;
+    let i = 0;
+    i < firstDay;
     i++
   ){
 
     const empty =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
+
 
     empty.className =
-      "day empty";
+      "day";
 
-    container.appendChild(empty);
+
+    empty.style.visibility =
+      "hidden";
+
+
+    container.appendChild(
+      empty
+    );
+
   }
 
 
-  /* DAYS */
+  let count = 0;
+
 
   const today =
     new Date();
 
+
   for(
-    let day=1;
-    day<=totalDays;
+    let day = 1;
+    day <= totalDays;
     day++
   ){
 
     const cell =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
+
 
     cell.className =
       "day";
 
-    cell.innerText =
-      banglaNumber(day);
+
+    const key =
+      dateKey(
+        year,
+        month,
+        day
+      );
+
+
+    const holiday =
+      holidays[key];
+
+
+    if(holiday){
+
+      cell.classList.add(
+        "holiday"
+      );
+
+      count++;
+
+    }
 
 
     if(
+
       day === today.getDate() &&
       month === today.getMonth() &&
       year === today.getFullYear()
+
     ){
 
       cell.classList.add(
@@ -769,40 +2973,84 @@ function renderCalendar(){
     }
 
 
+    const date =
+      new Date(
+        year,
+        month,
+        day
+      );
+
+
+    const bangla =
+      getBanglaDate(date);
+
+
+    cell.innerHTML = `
+
+      <div class="day-number">
+        ${bn(day)}
+      </div>
+
+      <div class="day-bn">
+        ${bn(bangla.day)}
+      </div>
+
+    `;
+
+
     cell.onclick =
       function(){
 
-        const selected =
-          new Date(
-            year,
-            month,
-            day
-          );
+        playClick();
+
+        vibrate();
 
         showSelectedDate(
-          selected
+          date
         );
 
       };
 
 
-    container.appendChild(cell);
+    container.appendChild(
+      cell
+    );
+
   }
+
+
+  document.getElementById(
+    "holidayCount"
+  ).innerText =
+    bn(count);
 
 }
 
 
-/* =========================================
+/* ==================================================
    SELECTED DATE
-========================================= */
+================================================== */
 
 function showSelectedDate(date){
 
-  const bd =
+  const bangla =
     getBanglaDate(date);
+
 
   const hijri =
     getHijriDate(date);
+
+
+  const key =
+    dateKey(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    );
+
+
+  const holiday =
+    holidays[key];
 
 
   document.getElementById(
@@ -814,33 +3062,76 @@ function showSelectedDate(date){
   document.getElementById(
     "selectedBangla"
   ).innerText =
-    banglaNumber(bd.day) +
+
+    bn(bangla.day) +
     " " +
-    banglaMonths[bd.month] +
+    banglaMonths[
+      bangla.month
+    ] +
     " " +
-    banglaNumber(bd.year);
+    bn(bangla.year);
 
 
   document.getElementById(
     "selectedHijri"
   ).innerText =
-    banglaNumber(hijri.day) +
+
+    bn(hijri.day) +
     " " +
     hijri.month +
     " " +
-    banglaNumber(hijri.year);
+    bn(hijri.year);
+
+
+  const row =
+    document.getElementById(
+      "selectedHolidayRow"
+    );
+
+
+  if(holiday){
+
+    row.style.display =
+      "flex";
+
+
+    document.getElementById(
+      "selectedHoliday"
+    ).innerText =
+
+      holiday.name +
+      " — " +
+      holiday.type;
+
+
+    showToast(
+      "🎉 " + holiday.name
+    );
+
+  }
+
+  else{
+
+    row.style.display =
+      "none";
+
+  }
 
 }
 
 
-/* =========================================
+/* ==================================================
    PREVIOUS MONTH
-========================================= */
+================================================== */
 
 function previousMonth(){
 
+  playClick();
+
+  vibrate();
+
   currentDate.setMonth(
-    currentDate.getMonth()-1
+    currentDate.getMonth() - 1
   );
 
   renderCalendar();
@@ -848,14 +3139,18 @@ function previousMonth(){
 }
 
 
-/* =========================================
+/* ==================================================
    NEXT MONTH
-========================================= */
+================================================== */
 
 function nextMonth(){
 
+  playClick();
+
+  vibrate();
+
   currentDate.setMonth(
-    currentDate.getMonth()+1
+    currentDate.getMonth() + 1
   );
 
   renderCalendar();
@@ -863,60 +3158,172 @@ function nextMonth(){
 }
 
 
-/* =========================================
+/* ==================================================
+   HOLIDAY LIST
+================================================== */
+
+function renderHolidayList(){
+
+  const container =
+    document.getElementById(
+      "holidayList"
+    );
+
+
+  container.innerHTML = "";
+
+
+  Object.entries(
+    holidays
+  ).forEach(
+    ([date,holiday]) => {
+
+      const parts =
+        date.split("-");
+
+
+      const month =
+        Number(parts[1]) - 1;
+
+
+      const day =
+        Number(parts[2]);
+
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+
+      item.className =
+        "holiday-item";
+
+
+      item.innerHTML = `
+
+        <div class="holiday-date">
+
+          ${bn(day)}
+
+          <br>
+
+          <small>
+            ${englishMonths[month]}
+          </small>
+
+        </div>
+
+
+        <div class="holiday-name">
+
+          ${holiday.name}
+
+          <div class="holiday-type">
+            ${holiday.type}
+          </div>
+
+        </div>
+
+
+        <div>
+          🎉
+        </div>
+
+      `;
+
+
+      container.appendChild(
+        item
+      );
+
+    }
+  );
+
+}
+
+
+/* ==================================================
    EVENTS
-========================================= */
+================================================== */
 
 function addEvent(){
+
+  playClick();
+
+  vibrate();
+
 
   const input =
     document.getElementById(
       "eventInput"
     );
 
+
   const text =
     input.value.trim();
 
+
   if(!text){
 
-    alert(
-      "দয়া করে একটি গুরুত্বপূর্ণ তারিখ লিখুন।"
+    showToast(
+      "⚠️ আগে একটি নাম লিখুন"
     );
 
     return;
+
   }
 
 
   const events =
     JSON.parse(
+
       localStorage.getItem(
-        "calendarEvents"
-      ) || "[]"
+        "rabbiCalendarEvents"
+      ) ||
+      "[]"
+
     );
 
 
   events.push({
+
     text:text,
-    date:new Date().toLocaleDateString()
+
+    date:
+      new Date()
+      .toLocaleDateString(
+        "bn-BD"
+      )
+
   });
 
 
   localStorage.setItem(
-    "calendarEvents",
+
+    "rabbiCalendarEvents",
+
     JSON.stringify(events)
+
   );
 
 
-  input.value="";
+  input.value = "";
+
 
   loadEvents();
+
+
+  showToast(
+    "✅ গুরুত্বপূর্ণ দিন যোগ হয়েছে"
+  );
 
 }
 
 
-/* =========================================
+/* ==================================================
    LOAD EVENTS
-========================================= */
+================================================== */
 
 function loadEvents(){
 
@@ -925,31 +3332,53 @@ function loadEvents(){
       "events"
     );
 
+
   const events =
     JSON.parse(
+
       localStorage.getItem(
-        "calendarEvents"
-      ) || "[]"
+        "rabbiCalendarEvents"
+      ) ||
+      "[]"
+
     );
 
 
-  container.innerHTML="";
+  container.innerHTML = "";
 
 
   events.forEach(
-    (event,index)=>{
+    (event,index) => {
 
       const div =
         document.createElement(
           "div"
         );
 
+
       div.className =
         "event";
 
 
       div.innerHTML = `
-        <span>📌 ${event.text}</span>
+
+        <div>
+
+          📌 ${event.text}
+
+          <br>
+
+          <small
+            style="
+              color:#8fa097;
+              font-size:9px;
+            "
+          >
+            ${event.date}
+          </small>
+
+        </div>
+
 
         <button
           class="delete"
@@ -957,10 +3386,13 @@ function loadEvents(){
         >
           🗑️
         </button>
+
       `;
 
 
-      container.appendChild(div);
+      container.appendChild(
+        div
+      );
 
     }
   );
@@ -968,17 +3400,25 @@ function loadEvents(){
 }
 
 
-/* =========================================
+/* ==================================================
    DELETE EVENT
-========================================= */
+================================================== */
 
 function deleteEvent(index){
 
+  playClick();
+
+  vibrate();
+
+
   const events =
     JSON.parse(
+
       localStorage.getItem(
-        "calendarEvents"
-      ) || "[]"
+        "rabbiCalendarEvents"
+      ) ||
+      "[]"
+
     );
 
 
@@ -989,23 +3429,374 @@ function deleteEvent(index){
 
 
   localStorage.setItem(
-    "calendarEvents",
+
+    "rabbiCalendarEvents",
+
     JSON.stringify(events)
+
   );
 
 
   loadEvents();
 
+
+  showToast(
+    "🗑️ গুরুত্বপূর্ণ দিন মুছে দেওয়া হয়েছে"
+  );
+
 }
 
 
-/* =========================================
+/* ==================================================
+   TOAST
+================================================== */
+
+let toastTimer;
+
+
+function showToast(message){
+
+  const toast =
+    document.getElementById(
+      "toast"
+    );
+
+
+  toast.innerText =
+    message;
+
+
+  toast.classList.add(
+    "show"
+  );
+
+
+  clearTimeout(
+    toastTimer
+  );
+
+
+  toastTimer =
+    setTimeout(
+      () => {
+
+        toast.classList.remove(
+          "show"
+        );
+
+      },
+      2200
+    );
+
+}
+
+
+/* ==================================================
+   VIBRATION
+================================================== */
+
+function vibrate(){
+
+  if(
+    navigator.vibrate
+  ){
+
+    navigator.vibrate(25);
+
+  }
+
+}
+
+
+/* ==================================================
+   AUDIO SYSTEM
+================================================== */
+
+let audioContext =
+  null;
+
+
+let soundEnabled =
+  false;
+
+
+let ambienceTimer =
+  null;
+
+
+/* ==================================================
+   CREATE AUDIO
+================================================== */
+
+function initAudio(){
+
+  if(audioContext){
+    return;
+  }
+
+
+  const AudioContext =
+    window.AudioContext ||
+    window.webkitAudioContext;
+
+
+  if(!AudioContext){
+
+    showToast(
+      "এই ব্রাউজারে sound support নেই"
+    );
+
+    return;
+
+  }
+
+
+  audioContext =
+    new AudioContext();
+
+}
+
+
+/* ==================================================
+   CLICK SOUND
+================================================== */
+
+function playClick(){
+
+  if(
+    !soundEnabled
+  ){
+
+    return;
+
+  }
+
+
+  initAudio();
+
+
+  if(!audioContext){
+    return;
+  }
+
+
+  const oscillator =
+    audioContext.createOscillator();
+
+
+  const gain =
+    audioContext.createGain();
+
+
+  oscillator.type =
+    "sine";
+
+
+  oscillator.frequency.value =
+    700;
+
+
+  gain.gain.setValueAtTime(
+    .0001,
+    audioContext.currentTime
+  );
+
+
+  gain.gain.exponentialRampToValueAtTime(
+    .045,
+    audioContext.currentTime + .01
+  );
+
+
+  gain.gain.exponentialRampToValueAtTime(
+    .0001,
+    audioContext.currentTime + .09
+  );
+
+
+  oscillator.connect(
+    gain
+  );
+
+
+  gain.connect(
+    audioContext.destination
+  );
+
+
+  oscillator.start();
+
+
+  oscillator.stop(
+    audioContext.currentTime + .1
+  );
+
+}
+
+
+/* ==================================================
+   MORNING AMBIENCE
+================================================== */
+
+function playMorningSound(){
+
+  if(
+    !soundEnabled
+  ){
+
+    return;
+
+  }
+
+
+  initAudio();
+
+
+  if(!audioContext){
+    return;
+  }
+
+
+  const oscillator =
+    audioContext.createOscillator();
+
+
+  const gain =
+    audioContext.createGain();
+
+
+  oscillator.type =
+    "sine";
+
+
+  oscillator.frequency.value =
+    392;
+
+
+  gain.gain.setValueAtTime(
+    .0001,
+    audioContext.currentTime
+  );
+
+
+  gain.gain.exponentialRampToValueAtTime(
+    .018,
+    audioContext.currentTime + 1
+  );
+
+
+  gain.gain.exponentialRampToValueAtTime(
+    .0001,
+    audioContext.currentTime + 3
+  );
+
+
+  oscillator.connect(
+    gain
+  );
+
+
+  gain.connect(
+    audioContext.destination
+  );
+
+
+  oscillator.start();
+
+
+  oscillator.stop(
+    audioContext.currentTime + 3
+  );
+
+}
+
+
+/* ==================================================
+   TOGGLE SOUND
+================================================== */
+
+function toggleSound(){
+
+  soundEnabled =
+    !soundEnabled;
+
+
+  const button =
+    document.getElementById(
+      "soundButton"
+    );
+
+
+  if(soundEnabled){
+
+    initAudio();
+
+
+    if(
+      audioContext &&
+      audioContext.state ===
+      "suspended"
+    ){
+
+      audioContext.resume();
+
+    }
+
+
+    button.innerText =
+      "🔊";
+
+
+    showToast(
+      "🔊 Sound চালু হয়েছে"
+    );
+
+
+    playMorningSound();
+
+
+    clearInterval(
+      ambienceTimer
+    );
+
+
+    ambienceTimer =
+      setInterval(
+        playMorningSound,
+        12000
+      );
+
+  }
+
+  else{
+
+    button.innerText =
+      "🔇";
+
+
+    showToast(
+      "🔇 Sound বন্ধ হয়েছে"
+    );
+
+
+    clearInterval(
+      ambienceTimer
+    );
+
+  }
+
+}
+
+
+/* ==================================================
    START
-========================================= */
+================================================== */
 
 updateToday();
 
 renderCalendar();
+
+renderHolidayList();
 
 loadEvents();
 
@@ -1015,5 +3806,7 @@ showSelectedDate(
 
 </script>
 
+
 </body>
-      </html>
+
+</html>
