@@ -2,17 +2,25 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 
+/* =========================================
+   PORT
+========================================= */
+
 const PORT = process.env.PORT || 10000;
 
+
+/* =========================================
+   WEBSITE DIRECTORY
+========================================= */
+
 const ROOT = __dirname;
-const INDEX_FILE = path.join(ROOT, "index.html");
 
 
 /* =========================================
    MIME TYPES
 ========================================= */
 
-const MIME_TYPES = {
+const mimeTypes = {
   ".html": "text/html; charset=UTF-8",
   ".css": "text/css; charset=UTF-8",
   ".js": "application/javascript; charset=UTF-8",
@@ -22,130 +30,93 @@ const MIME_TYPES = {
   ".jpeg": "image/jpeg",
   ".gif": "image/gif",
   ".svg": "image/svg+xml",
-  ".ico": "image/x-icon",
   ".webp": "image/webp",
+  ".ico": "image/x-icon",
   ".txt": "text/plain; charset=UTF-8",
   ".webmanifest": "application/manifest+json"
 };
 
 
 /* =========================================
-   SEND RESPONSE
+   SEND JSON
 ========================================= */
 
-function sendResponse(
-  res,
-  statusCode,
-  content,
-  contentType = "text/plain; charset=UTF-8"
-) {
+function sendJSON(res, statusCode, data) {
 
   res.writeHead(statusCode, {
-    "Content-Type": contentType,
+    "Content-Type": "application/json; charset=UTF-8",
     "Cache-Control": "no-cache"
   });
 
-  res.end(content);
+  res.end(
+    JSON.stringify(data)
+  );
 }
 
 
 /* =========================================
-   READ REQUEST BODY
+   SEND TEXT
 ========================================= */
 
-function getRequestBody(req) {
+function sendText(res, statusCode, text) {
 
-  return new Promise((resolve, reject) => {
-
-    let body = "";
-
-    req.on("data", chunk => {
-
-      body += chunk.toString();
-
-      /*
-        Prevent extremely large requests.
-      */
-
-      if (body.length > 1024 * 1024) {
-
-        reject(
-          new Error("Request body too large")
-        );
-
-        req.destroy();
-      }
-
-    });
-
-    req.on("end", () => {
-
-      resolve(body);
-
-    });
-
-    req.on("error", error => {
-
-      reject(error);
-
-    });
-
+  res.writeHead(statusCode, {
+    "Content-Type": "text/plain; charset=UTF-8"
   });
 
+  res.end(text);
 }
 
 
 /* =========================================
-   API RESPONSE
+   API ROUTES
 ========================================= */
 
-function sendJSON(
-  res,
-  statusCode,
-  data
-) {
+function handleAPI(req, res, url) {
 
-  sendResponse(
-    res,
-    statusCode,
-    JSON.stringify(data),
-    "application/json; charset=UTF-8"
-  );
+  /* ---------------------------------------
+     HEALTH
+  --------------------------------------- */
 
-}
+  if (
+    url.pathname === "/health" ||
+    url.pathname === "/api/health"
+  ) {
 
-
-/* =========================================
-   HEALTH API
-========================================= */
-
-function healthAPI(req, res) {
-
-  sendJSON(
-    res,
-    200,
-    {
+    sendJSON(res, 200, {
       success: true,
-      app: "বাংলা ক্যালেন্ডার",
       status: "online",
-      server: "running",
+      app: "বাংলা ক্যালেন্ডার",
       time: new Date().toISOString()
-    }
-  );
+    });
 
-}
+    return true;
+  }
 
 
-/* =========================================
-   APP INFO API
-========================================= */
+  /* ---------------------------------------
+     API TEST
+  --------------------------------------- */
 
-function appInfoAPI(req, res) {
+  if (url.pathname === "/api/test") {
 
-  sendJSON(
-    res,
-    200,
-    {
+    sendJSON(res, 200, {
+      success: true,
+      message: "বাংলা ক্যালেন্ডার API ঠিকভাবে কাজ করছে।"
+    });
+
+    return true;
+  }
+
+
+  /* ---------------------------------------
+     APP INFO
+  --------------------------------------- */
+
+  if (url.pathname === "/api/info") {
+
+    sendJSON(res, 200, {
+
       success: true,
 
       app: {
@@ -163,24 +134,22 @@ function appInfoAPI(req, res) {
         "গুরুত্বপূর্ণ তারিখ"
       ]
 
-    }
-  );
+    });
 
-}
+    return true;
+  }
 
 
-/* =========================================
-   DATE API
-========================================= */
+  /* ---------------------------------------
+     CURRENT DATE
+  --------------------------------------- */
 
-function dateAPI(req, res) {
+  if (url.pathname === "/api/date") {
 
-  const now = new Date();
+    const now = new Date();
 
-  sendJSON(
-    res,
-    200,
-    {
+    sendJSON(res, 200, {
+
       success: true,
 
       date: {
@@ -192,88 +161,28 @@ function dateAPI(req, res) {
       iso: now.toISOString(),
 
       timestamp: Date.now()
-    }
-  );
 
-}
-
-
-/* =========================================
-   API ROUTER
-========================================= */
-
-async function handleAPI(
-  req,
-  res,
-  url
-) {
-
-  /*
-    Health
-  */
-
-  if (
-    url.pathname === "/health" ||
-    url.pathname === "/api/health"
-  ) {
-
-    healthAPI(req, res);
+    });
 
     return true;
   }
 
 
-  /*
-    App info
-  */
+  /* ---------------------------------------
+     UNKNOWN API
+  --------------------------------------- */
 
-  if (
-    url.pathname === "/api/info"
-  ) {
+  sendJSON(res, 404, {
 
-    appInfoAPI(req, res);
+    success: false,
 
-    return true;
-  }
+    error: "API endpoint not found",
 
+    path: url.pathname
 
-  /*
-    Current date
-  */
+  });
 
-  if (
-    url.pathname === "/api/date"
-  ) {
-
-    dateAPI(req, res);
-
-    return true;
-  }
-
-
-  /*
-    Test API
-  */
-
-  if (
-    url.pathname === "/api/test"
-  ) {
-
-    sendJSON(
-      res,
-      200,
-      {
-        success: true,
-        message:
-          "বাংলা ক্যালেন্ডার API ঠিকভাবে কাজ করছে।"
-      }
-    );
-
-    return true;
-  }
-
-
-  return false;
+  return true;
 }
 
 
@@ -281,52 +190,42 @@ async function handleAPI(
    STATIC FILE SERVER
 ========================================= */
 
-function serveStaticFile(
-  req,
-  res,
-  url
-) {
+function serveFile(req, res, url) {
 
-  let requestPath =
-    decodeURIComponent(
-      url.pathname
-    );
+  let requestedPath = url.pathname;
 
 
-  /*
-    Home page
-  */
+  /* ---------------------------------------
+     HOME PAGE
+  --------------------------------------- */
 
   if (
-    requestPath === "/" ||
-    requestPath === ""
+    requestedPath === "/" ||
+    requestedPath === ""
   ) {
 
-    requestPath = "/index.html";
+    requestedPath = "/index.html";
 
   }
 
 
-  /*
-    Prevent path traversal
-  */
+  /* ---------------------------------------
+     REMOVE QUERY-SAFE PATH
+  --------------------------------------- */
 
-  const safePath =
-    path.normalize(
-      path.join(
-        ROOT,
-        requestPath
-      )
-    );
+  requestedPath =
+    decodeURIComponent(requestedPath);
 
+
+  /* ---------------------------------------
+     SECURITY
+  --------------------------------------- */
 
   if (
-    !safePath.startsWith(
-      ROOT
-    )
+    requestedPath.includes("..")
   ) {
 
-    sendResponse(
+    sendText(
       res,
       403,
       "403 Forbidden"
@@ -336,53 +235,82 @@ function serveStaticFile(
   }
 
 
+  /* ---------------------------------------
+     FILE PATH
+  --------------------------------------- */
+
+  const filePath =
+    path.join(
+      ROOT,
+      requestedPath
+    );
+
+
+  /* ---------------------------------------
+     CHECK FILE
+  --------------------------------------- */
+
   fs.stat(
-    safePath,
+    filePath,
     (error, stats) => {
 
       if (error) {
 
-        /*
-          If a file is not found,
-          show index.html for browser routes.
-        */
+        /* -------------------------------
+           FILE NOT FOUND
+        -------------------------------- */
 
         if (
-          requestPath !== "/index.html" &&
-          fs.existsSync(INDEX_FILE)
+          requestedPath !== "/index.html"
         ) {
 
-          fs.readFile(
-            INDEX_FILE,
-            (readError, data) => {
+          const indexPath =
+            path.join(
+              ROOT,
+              "index.html"
+            );
 
-              if (readError) {
 
-                sendResponse(
-                  res,
-                  500,
-                  "500 Internal Server Error"
+          if (
+            fs.existsSync(indexPath)
+          ) {
+
+            fs.readFile(
+              indexPath,
+              (indexError, data) => {
+
+                if (indexError) {
+
+                  sendText(
+                    res,
+                    500,
+                    "500 Internal Server Error"
+                  );
+
+                  return;
+                }
+
+
+                res.writeHead(
+                  200,
+                  {
+                    "Content-Type":
+                      "text/html; charset=UTF-8"
+                  }
                 );
 
-                return;
+                res.end(data);
+
               }
+            );
 
+            return;
+          }
 
-              sendResponse(
-                res,
-                200,
-                data,
-                "text/html; charset=UTF-8"
-              );
-
-            }
-          );
-
-          return;
         }
 
 
-        sendResponse(
+        sendText(
           res,
           404,
           "404 Not Found"
@@ -392,30 +320,30 @@ function serveStaticFile(
       }
 
 
-      if (
-        stats.isDirectory()
-      ) {
+      /* ---------------------------------
+         DIRECTORY
+      --------------------------------- */
 
-        const directoryIndex =
+      if (stats.isDirectory()) {
+
+        const indexFile =
           path.join(
-            safePath,
+            filePath,
             "index.html"
           );
 
 
         if (
-          fs.existsSync(
-            directoryIndex
-          )
+          fs.existsSync(indexFile)
         ) {
 
           fs.readFile(
-            directoryIndex,
-            (readError, data) => {
+            indexFile,
+            (indexError, data) => {
 
-              if (readError) {
+              if (indexError) {
 
-                sendResponse(
+                sendText(
                   res,
                   500,
                   "500 Internal Server Error"
@@ -425,12 +353,15 @@ function serveStaticFile(
               }
 
 
-              sendResponse(
-                res,
+              res.writeHead(
                 200,
-                data,
-                "text/html; charset=UTF-8"
+                {
+                  "Content-Type":
+                    "text/html; charset=UTF-8"
+                }
               );
+
+              res.end(data);
 
             }
           );
@@ -439,7 +370,7 @@ function serveStaticFile(
         }
 
 
-        sendResponse(
+        sendText(
           res,
           403,
           "403 Forbidden"
@@ -449,24 +380,38 @@ function serveStaticFile(
       }
 
 
+      /* ---------------------------------
+         FILE EXTENSION
+      --------------------------------- */
+
       const extension =
         path.extname(
-          safePath
+          filePath
         ).toLowerCase();
 
 
       const contentType =
-        MIME_TYPES[extension] ||
+        mimeTypes[extension] ||
         "application/octet-stream";
 
 
+      /* ---------------------------------
+         READ FILE
+      --------------------------------- */
+
       fs.readFile(
-        safePath,
+        filePath,
         (readError, data) => {
 
           if (readError) {
 
-            sendResponse(
+            console.error(
+              "File read error:",
+              readError
+            );
+
+
+            sendText(
               res,
               500,
               "500 Internal Server Error"
@@ -476,12 +421,18 @@ function serveStaticFile(
           }
 
 
-          sendResponse(
-            res,
+          res.writeHead(
             200,
-            data,
-            contentType
+            {
+              "Content-Type": contentType,
+
+              "Cache-Control":
+                "public, max-age=3600"
+            }
           );
+
+
+          res.end(data);
 
         }
       );
@@ -493,64 +444,56 @@ function serveStaticFile(
 
 
 /* =========================================
-   MAIN SERVER
+   CREATE SERVER
 ========================================= */
 
 const server =
   http.createServer(
-    async (req, res) => {
+    (req, res) => {
 
       try {
 
         const url =
           new URL(
             req.url,
-            `http://${req.headers.host || "localhost"}`
+            "http://" +
+            (
+              req.headers.host ||
+              "localhost"
+            )
           );
 
 
-        /*
-          API
-        */
+        console.log(
+          req.method,
+          url.pathname
+        );
+
+
+        /* -------------------------------
+           API
+        -------------------------------- */
 
         if (
-          url.pathname.startsWith(
-            "/api/"
-          ) ||
-          url.pathname === "/health"
+          url.pathname === "/health" ||
+          url.pathname.startsWith("/api/")
         ) {
 
-          const handled =
-            await handleAPI(
-              req,
-              res,
-              url
-            );
-
-
-          if (handled) {
-            return;
-          }
-
-
-          sendJSON(
+          handleAPI(
+            req,
             res,
-            404,
-            {
-              success: false,
-              error: "API endpoint not found"
-            }
+            url
           );
 
           return;
         }
 
 
-        /*
-          Static files
-        */
+        /* -------------------------------
+           WEBSITE FILES
+        -------------------------------- */
 
-        serveStaticFile(
+        serveFile(
           req,
           res,
           url
@@ -561,7 +504,7 @@ const server =
       catch (error) {
 
         console.error(
-          "Server Error:",
+          "Server error:",
           error
         );
 
@@ -571,8 +514,7 @@ const server =
           500,
           {
             success: false,
-            error:
-              "Internal Server Error"
+            error: "Internal Server Error"
           }
         );
 
@@ -588,7 +530,7 @@ const server =
 
 server.on(
   "error",
-  error => {
+  (error) => {
 
     console.error(
       "Server failed:",
@@ -609,12 +551,78 @@ server.listen(
   () => {
 
     console.log(
-      "================================="
+      "===================================="
     );
 
     console.log(
-      "বাংলা ক্যালেন্ডার Server Started"
+      "বাংলা ক্যালেন্ডার"
     );
 
     console.log(
-      "Port
+      "Server is running"
+    );
+
+    console.log(
+      "Port: " + PORT
+    );
+
+    console.log(
+      "===================================="
+    );
+
+  }
+);
+
+
+/* =========================================
+   GRACEFUL SHUTDOWN
+========================================= */
+
+process.on(
+  "SIGTERM",
+  () => {
+
+    console.log(
+      "Stopping server..."
+    );
+
+
+    server.close(
+      () => {
+
+        console.log(
+          "Server stopped."
+        );
+
+        process.exit(0);
+
+      }
+    );
+
+  }
+);
+
+
+process.on(
+  "SIGINT",
+  () => {
+
+    console.log(
+      "Stopping server..."
+    );
+
+
+    server.close(
+      () => {
+
+        console.log(
+          "Server stopped."
+        );
+
+        process.exit(0);
+
+      }
+    );
+
+  }
+);
