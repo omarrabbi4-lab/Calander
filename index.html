@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#151126">
+
+<title>বাংলা ক্যালেন্ডার 🇧🇩</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,"Noto Sans Bengali",sans-serif;
+}
+
+body{
+  background:
+    radial-gradient(circle at top,#35245c 0%,#171326 45%,#090811 100%);
+  color:#fff;
+  min-height:100vh;
+  padding:15px;
+}
+
+.app{
+  max-width:500px;
+  margin:auto;
+}
+
+/* HEADER */
+.header{
+  text-align:center;
+  padding:18px 10px 12px;
+}
+
+.header .icon{
+  font-size:42px;
+}
+
+.header h1{
+  font-size:27px;
+  margin-top:5px;
+}
+
+.header p{
+  color:#c9bfdc;
+  margin-top:5px;
+}
+
+/* TODAY CARD */
+.today{
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(15px);
+  border-radius:24px;
+  padding:20px;
+  text-align:center;
+  box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+.today .english{
+  font-size:18px;
+  color:#ddd;
+}
+
+.today .bangla{
+  font-size:29px;
+  font-weight:bold;
+  margin:8px 0;
+}
+
+.today .hijri{
+  color:#d8bfff;
+  font-size:15px;
+}
+
+/* MONTH CONTROL */
+.month-control{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin:18px 0 12px;
+}
+
+.month-title{
+  text-align:center;
+  flex:1;
+}
+
+.month-title h2{
+  font-size:22px;
+}
+
+.month-title span{
+  color:#aaa0bd;
+  font-size:14px;
+}
+
+.nav-btn{
+  width:44px;
+  height:44px;
+  border:0;
+  border-radius:14px;
+  background:rgba(255,255,255,.1);
+  color:white;
+  font-size:22px;
+  cursor:pointer;
+}
+
+.nav-btn:active{
+  transform:scale(.94);
+}
+
+/* CALENDAR */
+.calendar{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:24px;
+  padding:13px;
+  backdrop-filter:blur(15px);
+}
+
+.weekdays,
+.days{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:5px;
+}
+
+.weekdays div{
+  text-align:center;
+  color:#bfb4d0;
+  font-size:13px;
+  padding:8px 0;
+}
+
+.day{
+  min-height:52px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:15px;
+  cursor:pointer;
+  background:rgba(255,255,255,.045);
+  font-size:16px;
+  position:relative;
+}
+
+.day:hover{
+  background:rgba(255,255,255,.12);
+}
+
+.day.today-day{
+  background:linear-gradient(135deg,#ff4f91,#814cff);
+  font-weight:bold;
+  box-shadow:0 6px 18px rgba(255,79,145,.3);
+}
+
+.day.empty{
+  background:transparent;
+  cursor:default;
+}
+
+/* INFO */
+.info{
+  margin-top:18px;
+  background:rgba(255,255,255,.07);
+  border-radius:22px;
+  padding:18px;
+}
+
+.info h3{
+  font-size:18px;
+  margin-bottom:12px;
+}
+
+.info-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:11px 0;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.info-item:last-child{
+  border-bottom:0;
+}
+
+.info-icon{
+  width:40px;
+  height:40px;
+  border-radius:13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.08);
+  font-size:20px;
+}
+
+.info-text{
+  flex:1;
+}
+
+.info-text small{
+  display:block;
+  color:#aaa0bd;
+  margin-top:3px;
+}
+
+/* EVENT */
+.event-box{
+  margin-top:18px;
+  background:linear-gradient(
+    135deg,
+    rgba(255,79,145,.16),
+    rgba(129,76,255,.16)
+  );
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:22px;
+  padding:18px;
+}
+
+.event-box h3{
+  margin-bottom:10px;
+}
+
+.event-input{
+  width:100%;
+  padding:13px;
+  border:0;
+  outline:none;
+  border-radius:13px;
+  background:rgba(0,0,0,.25);
+  color:white;
+  margin-bottom:10px;
+}
+
+.event-input::placeholder{
+  color:#aaa;
+}
+
+.add-btn{
+  width:100%;
+  border:0;
+  padding:13px;
+  border-radius:13px;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  background:linear-gradient(135deg,#ff4f91,#814cff);
+  cursor:pointer;
+}
+
+.events{
+  margin-top:12px;
+}
+
+.event{
+  background:rgba(255,255,255,.07);
+  border-radius:13px;
+  padding:12px;
+  margin-top:8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.delete{
+  border:0;
+  background:none;
+  color:#ff719f;
+  font-size:18px;
+}
+
+/* FOOTER */
+.footer{
+  text-align:center;
+  color:#80758f;
+  font-size:12px;
+  padding:25px 0 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <div class="header">
+    <div class="icon">🇧🇩</div>
+    <h1>বাংলা ক্যালেন্ডার</h1>
+    <p>বাংলা • ইংরেজি • হিজরি</p>
+  </div>
+
+  <!-- TODAY -->
+  <div class="today">
+
+    <div class="english" id="todayEnglish">
+      আজকের তারিখ
+    </div>
+
+    <div class="bangla" id="todayBangla">
+      বাংলা তারিখ
+    </div>
+
+    <div class="hijri" id="todayHijri">
+      হিজরি তারিখ
+    </div>
+
+  </div>
+
+  <!-- MONTH -->
+  <div class="month-control">
+
+    <button class="nav-btn" onclick="previousMonth()">‹</button>
+
+    <div class="month-title">
+      <h2 id="monthName">অক্টোবর ২০২৬</h2>
+      <span id="yearName">ইংরেজি ক্যালেন্ডার</span>
+    </div>
+
+    <button class="nav-btn" onclick="nextMonth()">›</button>
+
+  </div>
+
+  <!-- CALENDAR -->
+  <div class="calendar">
+
+    <div class="weekdays">
+      <div>রবি</div>
+      <div>সোম</div>
+      <div>মঙ্গল</div>
+      <div>বুধ</div>
+      <div>বৃহস্পতি</div>
+      <div>শুক্র</div>
+      <div>শনি</div>
+    </div>
+
+    <div class="days" id="calendarDays"></div>
+
+  </div>
+
+  <!-- SELECTED DATE INFO -->
+  <div class="info">
+
+    <h3>📅 নির্বাচিত দিনের তথ্য</h3>
+
+    <div class="info-item">
+      <div class="info-icon">🇬🇧</div>
+      <div class="info-text">
+        ইংরেজি
+        <small id="selectedEnglish">আজকের তারিখ</small>
+      </div>
+    </div>
+
+    <div class="info-item">
+      <div class="info-icon">🇧🇩</div>
+      <div class="info-text">
+        বাংলা
+        <small id="selectedBangla">বাংলা তারিখ</small>
+      </div>
+    </div>
+
+    <div class="info-item">
+      <div class="info-icon">🌙</div>
+      <div class="info-text">
+        হিজরি
+        <small id="selectedHijri">হিজরি তারিখ</small>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- EVENT -->
+  <div class="event-box">
+
+    <h3>📝 গুরুত্বপূর্ণ তারিখ</h3>
+
+    <input
+      id="eventInput"
+      class="event-input"
+      type="text"
+      placeholder="যেমন: জন্মদিন, বিবাহবার্ষিকী..."
+    >
+
+    <button class="add-btn" onclick="addEvent()">
+      + তারিখ যোগ করুন
+    </button>
+
+    <div class="events" id="events"></div>
+
+  </div>
+
+  <div class="footer">
+    🇧🇩 বাংলা ক্যালেন্ডার • আপনার নিজের ডিজিটাল ক্যালেন্ডার
+  </div>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   DATE
+========================================= */
+
+let currentDate = new Date();
+
+
+/* =========================================
+   BANGLA MONTH
+========================================= */
+
+const banglaMonths = [
+  "বৈশাখ",
+  "জ্যৈষ্ঠ",
+  "আষাঢ়",
+  "শ্রাবণ",
+  "ভাদ্র",
+  "আশ্বিন",
+  "কার্তিক",
+  "অগ্রহায়ণ",
+  "পৌষ",
+  "মাঘ",
+  "ফাল্গুন",
+  "চৈত্র"
+];
+
+
+/* =========================================
+   ENGLISH MONTH
+========================================= */
+
+const englishMonths = [
+  "জানুয়ারি",
+  "ফেব্রুয়ারি",
+  "মার্চ",
+  "এপ্রিল",
+  "মে",
+  "জুন",
+  "জুলাই",
+  "আগস্ট",
+  "সেপ্টেম্বর",
+  "অক্টোবর",
+  "নভেম্বর",
+  "ডিসেম্বর"
+];
+
+
+/* =========================================
+   BANGLA NUMBERS
+========================================= */
+
+function banglaNumber(number){
+
+  const bn = [
+    "০","১","২","৩","৪",
+    "৫","৬","৭","৮","৯"
+  ];
+
+  return String(number)
+    .split("")
+    .map(x => bn[x] ?? x)
+    .join("");
+}
+
+
+/* =========================================
+   BANGLA DATE
+   Approximate Bangladesh calendar conversion
+========================================= */
+
+function getBanglaDate(date){
+
+  let year = date.getFullYear();
+  let month = date.getMonth();
+  let day = date.getDate();
+
+  /*
+    Approximate starting dates for Bangla months.
+    This keeps the app functional without an external API.
+  */
+
+  const starts = [
+    [4,14], // Boishakh
+    [5,15],
+    [6,15],
+    [7,16],
+    [8,16],
+    [9,16],
+    [10,16],
+    [11,16],
+    [0,15],
+    [1,14],
+    [2,15],
+    [3,14]
+  ];
+
+  let bMonth = month;
+  let bDay = day;
+
+  let start = starts[month];
+
+  if(
+    month === start[0] &&
+    day >= start[1]
+  ){
+
+    bMonth = month;
+    bDay = day - start[1] + 1;
+
+  }else{
+
+    bMonth = month - 1;
+
+    if(bMonth < 0){
+      bMonth = 11;
+      year--;
+    }
+
+    let previousStart = starts[bMonth][1];
+
+    let daysInPreviousMonth =
+      new Date(
+        date.getFullYear(),
+        month,
+        0
+      ).getDate();
+
+    bDay =
+      daysInPreviousMonth -
+      previousStart +
+      day +
+      1;
+  }
+
+  let banglaYear =
+    year - 593;
+
+  if(month < 3){
+    banglaYear--;
+  }
+
+  return {
+    day:bDay,
+    month:bMonth,
+    year:banglaYear
+  };
+
+}
+
+
+/* =========================================
+   HIJRI DATE
+========================================= */
+
+function getHijriDate(date){
+
+  /*
+    Simple approximate Hijri conversion.
+    Full astronomical conversion can be added later.
+  */
+
+  const hijriMonths = [
+    "মহররম",
+    "সফর",
+    "রবিউল আউয়াল",
+    "রবিউস সানি",
+    "জমাদিউল আউয়াল",
+    "জমাদিউস সানি",
+    "রজব",
+    "শাবান",
+    "রমজান",
+    "শাওয়াল",
+    "জিলকদ",
+    "জিলহজ"
+  ];
+
+  const base =
+    new Date(2026,5,18);
+
+  const diff =
+    Math.floor(
+      (date-base)/(1000*60*60*24)
+    );
+
+  const hijriDay =
+    ((diff % 30)+30)%30 + 1;
+
+  const hijriMonth =
+    Math.floor(
+      (((diff % 354)+354)%354)/29.5
+    ) % 12;
+
+  const hijriYear =
+    1447 +
+    Math.floor(diff/354);
+
+  return {
+    day:hijriDay,
+    month:hijriMonths[hijriMonth],
+    year:hijriYear
+  };
+
+}
+
+
+/* =========================================
+   FORMAT DATE
+========================================= */
+
+function formatEnglish(date){
+
+  const months = [
+    "জানুয়ারি",
+    "ফেব্রুয়ারি",
+    "মার্চ",
+    "এপ্রিল",
+    "মে",
+    "জুন",
+    "জুলাই",
+    "আগস্ট",
+    "সেপ্টেম্বর",
+    "অক্টোবর",
+    "নভেম্বর",
+    "ডিসেম্বর"
+  ];
+
+  return (
+    banglaNumber(date.getDate()) +
+    " " +
+    months[date.getMonth()] +
+    " " +
+    banglaNumber(date.getFullYear())
+  );
+}
+
+
+/* =========================================
+   UPDATE TODAY
+========================================= */
+
+function updateToday(){
+
+  const today = new Date();
+
+  const bd =
+    getBanglaDate(today);
+
+  const hijri =
+    getHijriDate(today);
+
+  document.getElementById(
+    "todayEnglish"
+  ).innerText =
+    formatEnglish(today);
+
+  document.getElementById(
+    "todayBangla"
+  ).innerText =
+    banglaNumber(bd.day) +
+    " " +
+    banglaMonths[bd.month] +
+    " " +
+    banglaNumber(bd.year);
+
+  document.getElementById(
+    "todayHijri"
+  ).innerText =
+    banglaNumber(hijri.day) +
+    " " +
+    hijri.month +
+    " " +
+    banglaNumber(hijri.year);
+}
+
+
+/* =========================================
+   CALENDAR
+========================================= */
+
+function renderCalendar(){
+
+  const year =
+    currentDate.getFullYear();
+
+  const month =
+    currentDate.getMonth();
+
+  document.getElementById(
+    "monthName"
+  ).innerText =
+    englishMonths[month] +
+    " " +
+    banglaNumber(year);
+
+  const firstDay =
+    new Date(
+      year,
+      month,
+      1
+    ).getDay();
+
+  const totalDays =
+    new Date(
+      year,
+      month + 1,
+      0
+    ).getDate();
+
+  const container =
+    document.getElementById(
+      "calendarDays"
+    );
+
+  container.innerHTML = "";
+
+
+  /* EMPTY DAYS */
+
+  for(
+    let i=0;
+    i<firstDay;
+    i++
+  ){
+
+    const empty =
+      document.createElement("div");
+
+    empty.className =
+      "day empty";
+
+    container.appendChild(empty);
+  }
+
+
+  /* DAYS */
+
+  const today =
+    new Date();
+
+  for(
+    let day=1;
+    day<=totalDays;
+    day++
+  ){
+
+    const cell =
+      document.createElement("div");
+
+    cell.className =
+      "day";
+
+    cell.innerText =
+      banglaNumber(day);
+
+
+    if(
+      day === today.getDate() &&
+      month === today.getMonth() &&
+      year === today.getFullYear()
+    ){
+
+      cell.classList.add(
+        "today-day"
+      );
+
+    }
+
+
+    cell.onclick =
+      function(){
+
+        const selected =
+          new Date(
+            year,
+            month,
+            day
+          );
+
+        showSelectedDate(
+          selected
+        );
+
+      };
+
+
+    container.appendChild(cell);
+  }
+
+}
+
+
+/* =========================================
+   SELECTED DATE
+========================================= */
+
+function showSelectedDate(date){
+
+  const bd =
+    getBanglaDate(date);
+
+  const hijri =
+    getHijriDate(date);
+
+
+  document.getElementById(
+    "selectedEnglish"
+  ).innerText =
+    formatEnglish(date);
+
+
+  document.getElementById(
+    "selectedBangla"
+  ).innerText =
+    banglaNumber(bd.day) +
+    " " +
+    banglaMonths[bd.month] +
+    " " +
+    banglaNumber(bd.year);
+
+
+  document.getElementById(
+    "selectedHijri"
+  ).innerText =
+    banglaNumber(hijri.day) +
+    " " +
+    hijri.month +
+    " " +
+    banglaNumber(hijri.year);
+
+}
+
+
+/* =========================================
+   PREVIOUS MONTH
+========================================= */
+
+function previousMonth(){
+
+  currentDate.setMonth(
+    currentDate.getMonth()-1
+  );
+
+  renderCalendar();
+
+}
+
+
+/* =========================================
+   NEXT MONTH
+========================================= */
+
+function nextMonth(){
+
+  currentDate.setMonth(
+    currentDate.getMonth()+1
+  );
+
+  renderCalendar();
+
+}
+
+
+/* =========================================
+   EVENTS
+========================================= */
+
+function addEvent(){
+
+  const input =
+    document.getElementById(
+      "eventInput"
+    );
+
+  const text =
+    input.value.trim();
+
+  if(!text){
+
+    alert(
+      "দয়া করে একটি গুরুত্বপূর্ণ তারিখ লিখুন।"
+    );
+
+    return;
+  }
+
+
+  const events =
+    JSON.parse(
+      localStorage.getItem(
+        "calendarEvents"
+      ) || "[]"
+    );
+
+
+  events.push({
+    text:text,
+    date:new Date().toLocaleDateString()
+  });
+
+
+  localStorage.setItem(
+    "calendarEvents",
+    JSON.stringify(events)
+  );
+
+
+  input.value="";
+
+  loadEvents();
+
+}
+
+
+/* =========================================
+   LOAD EVENTS
+========================================= */
+
+function loadEvents(){
+
+  const container =
+    document.getElementById(
+      "events"
+    );
+
+  const events =
+    JSON.parse(
+      localStorage.getItem(
+        "calendarEvents"
+      ) || "[]"
+    );
+
+
+  container.innerHTML="";
+
+
+  events.forEach(
+    (event,index)=>{
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+      div.className =
+        "event";
+
+
+      div.innerHTML = `
+        <span>📌 ${event.text}</span>
+
+        <button
+          class="delete"
+          onclick="deleteEvent(${index})"
+        >
+          🗑️
+        </button>
+      `;
+
+
+      container.appendChild(div);
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   DELETE EVENT
+========================================= */
+
+function deleteEvent(index){
+
+  const events =
+    JSON.parse(
+      localStorage.getItem(
+        "calendarEvents"
+      ) || "[]"
+    );
+
+
+  events.splice(
+    index,
+    1
+  );
+
+
+  localStorage.setItem(
+    "calendarEvents",
+    JSON.stringify(events)
+  );
+
+
+  loadEvents();
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+updateToday();
+
+renderCalendar();
+
+loadEvents();
+
+showSelectedDate(
+  new Date()
+);
+
+</script>
+
+</body>
+      </html>
