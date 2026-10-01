@@ -1,0 +1,31 @@
+{
+  "name": "বাংলা ক্যালেন্ডার",
+  "short_name": "বাংলা ক্যালেন্ডার",
+  "description": "বাংলা, ইংরেজি ও হিজরি তারিখ দেখার সুন্দর ডিজিটাল ক্যালেন্ডার",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#090811",
+  "theme_color": "#151126",
+  "lang": "bn",
+  "dir": "ltr",
+  "categories": [
+    "productivity",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
